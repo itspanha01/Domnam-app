@@ -1,8 +1,11 @@
+"use client";
+
+import { useState } from "react";
 import { PlantCard } from "@/components/plant-catalog/plant-card";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
-const plants = [
+const initialPlants = [
   {
     name: "Heirloom Tomato",
     image: "https://placehold.co/600x400.png",
@@ -43,6 +46,18 @@ const plants = [
 
 
 export default function PlantCatalogPage() {
+  const [plants, setPlants] = useState(initialPlants);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleImageChange = (name: string, image: string) => {
+    setPlants(plants.map(p => p.name === name ? { ...p, image } : p));
+  };
+  
+  const filteredPlants = plants.filter(plant =>
+    plant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    plant.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
@@ -53,11 +68,20 @@ export default function PlantCatalogPage() {
       </div>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input placeholder="Search for plants..." className="pl-10" />
+        <Input 
+          placeholder="Search for plants..." 
+          className="pl-10"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {plants.map((plant) => (
-          <PlantCard key={plant.name} {...plant} />
+        {filteredPlants.map((plant) => (
+          <PlantCard 
+            key={plant.name}
+            {...plant}
+            onImageChange={handleImageChange}
+          />
         ))}
       </div>
     </div>
