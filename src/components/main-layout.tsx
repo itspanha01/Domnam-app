@@ -1,8 +1,8 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   SidebarProvider,
   Sidebar,
@@ -23,8 +23,10 @@ import {
   LayoutGrid,
   Sprout,
   Settings,
-  User
+  LogOut,
+  Loader2,
 } from "lucide-react";
+import { useAuth } from "@/context/auth-context";
 
 function Nav() {
   const pathname = usePathname();
@@ -53,6 +55,23 @@ function Nav() {
 
 
 export function MainLayout({ children }: { children: ReactNode }) {
+  const { user, loading, logout } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex h-screen w-screen items-center justify-center bg-background">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -73,9 +92,9 @@ export function MainLayout({ children }: { children: ReactNode }) {
                   </Button>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                  <Button variant="ghost" className="w-full justify-start">
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
+                  <Button variant="ghost" className="w-full justify-start" onClick={logout}>
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Logout
                   </Button>
               </SidebarMenuItem>
           </SidebarMenu>
