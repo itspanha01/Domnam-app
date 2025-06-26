@@ -33,10 +33,10 @@ interface AddPlantDialogProps {
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
-  type: z.string().min(1, "Please select a plant type."),
-  description: z.string().min(10, "Description must be at least 10 characters."),
-  aiHint: z.string().min(2, "AI hint must be at least 2 characters."),
-  image: z.instanceof(File, { message: "An image is required." }),
+  type: z.string().optional(),
+  description: z.string().optional(),
+  aiHint: z.string().optional(),
+  image: z.instanceof(File).optional(),
 });
 
 export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDialogProps) {
@@ -84,27 +84,35 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const imageDataUrl = reader.result as string;
+    
+    const completeSubmit = (imageDataUrl: string) => {
       onPlantAdd({
         name: values.name,
-        type: values.type,
-        description: values.description,
+        type: values.type || '',
+        description: values.description || '',
         image: imageDataUrl,
-        aiHint: values.aiHint,
+        aiHint: values.aiHint || '',
       });
       setIsSubmitting(false);
     };
-    reader.onerror = () => {
-      toast({
-        variant: "destructive",
-        title: "Error Reading File",
-        description: "Could not process the image. Please try again.",
-      });
-      setIsSubmitting(false);
-    };
-    reader.readAsDataURL(values.image);
+
+    if (values.image) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        completeSubmit(reader.result as string);
+      };
+      reader.onerror = () => {
+        toast({
+          variant: "destructive",
+          title: "Error Reading File",
+          description: "Could not process the image. Please try again.",
+        });
+        setIsSubmitting(false);
+      };
+      reader.readAsDataURL(values.image);
+    } else {
+      completeSubmit("https://placehold.co/600x400.png");
+    }
   };
 
   return (
@@ -121,7 +129,7 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Image</FormLabel>
+                  <FormLabel>Plant Image <span className="text-muted-foreground">(Optional)</span></FormLabel>
                   <FormControl>
                     <div className="w-full">
                       <div className="aspect-video relative bg-muted/50 rounded-md flex items-center justify-center border-2 border-dashed">
@@ -164,7 +172,7 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Type</FormLabel>
+                  <FormLabel>Plant Type <span className="text-muted-foreground">(Optional)</span></FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger><SelectValue placeholder="Select a type" /></SelectTrigger>
@@ -186,7 +194,7 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Description <span className="text-muted-foreground">(Optional)</span></FormLabel>
                   <FormControl>
                     <Textarea placeholder="Describe the plant's characteristics and care needs." {...field} />
                   </FormControl>
@@ -199,7 +207,7 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="aiHint"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>AI Image Hint</FormLabel>
+                  <FormLabel>AI Image Hint <span className="text-muted-foreground">(Optional)</span></FormLabel>
                    <FormControl>
                     <Input placeholder="e.g. 'tomato plant' or 'basil pot'" {...field} />
                   </FormControl>
