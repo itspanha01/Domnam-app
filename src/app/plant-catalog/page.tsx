@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AddPlantDialog } from "@/components/plant-catalog/add-plant-dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 
 export interface Plant {
   id: string;
@@ -74,6 +75,7 @@ export default function PlantCatalogPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddDialogOpen, setAddDialogOpen] = useState(false);
+  const [plantToDelete, setPlantToDelete] = useState<Plant | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -106,6 +108,20 @@ export default function PlantCatalogPage() {
     setPlants(plants.map(p => (p.id === id ? { ...p, image } : p)));
   };
   
+  const handleDeleteRequest = (id: string) => {
+    const plant = plants.find((p) => p.id === id);
+    if (plant) {
+      setPlantToDelete(plant);
+    }
+  };
+
+  const handleConfirmDelete = () => {
+    if (plantToDelete) {
+      setPlants((prevPlants) => prevPlants.filter((p) => p.id !== plantToDelete.id));
+      setPlantToDelete(null);
+    }
+  };
+
   const filteredPlants = plants.filter(plant =>
     plant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     plant.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -143,6 +159,7 @@ export default function PlantCatalogPage() {
             key={plant.id}
             {...plant}
             onImageChange={handleImageChange}
+            onDeleteRequest={handleDeleteRequest}
           />
         ))}
       </div>
@@ -151,6 +168,20 @@ export default function PlantCatalogPage() {
         onOpenChange={setAddDialogOpen}
         onPlantAdd={handleAddPlant}
       />
+      <AlertDialog open={!!plantToDelete} onOpenChange={(open) => !open && setPlantToDelete(null)}>
+          <AlertDialogContent>
+              <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                      This will permanently delete "{plantToDelete?.name}" from the catalog. This action cannot be undone.
+                  </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                  <AlertDialogCancel onClick={() => setPlantToDelete(null)}>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+              </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
     </div>
   );
 }

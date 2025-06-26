@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Upload } from "lucide-react";
+import { Upload, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 
@@ -17,9 +17,10 @@ interface PlantCardProps {
   description: string;
   type: string;
   onImageChange: (id: string, image: string) => void;
+  onDeleteRequest: (id: string) => void;
 }
 
-export function PlantCard({ id, name, image, aiHint, description, type, onImageChange }: PlantCardProps) {
+export function PlantCard({ id, name, image, aiHint, description, type, onImageChange, onDeleteRequest }: PlantCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -69,10 +70,14 @@ export function PlantCard({ id, name, image, aiHint, description, type, onImageC
         </div>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardFooter>
+      <CardFooter className="grid grid-cols-2 gap-2">
         <Button variant="outline" className="w-full" onClick={handleButtonClick}>
           <Upload className="mr-2 h-4 w-4" />
           Change Image
+        </Button>
+        <Button variant="destructive" className="w-full" onClick={() => onDeleteRequest(id)}>
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete
         </Button>
         <input
           type="file"
