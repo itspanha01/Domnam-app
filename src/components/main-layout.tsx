@@ -25,7 +25,6 @@ import {
   Settings,
   User
 } from "lucide-react";
-import { Logo } from "./logo";
 
 function Nav() {
   const pathname = usePathname();
@@ -59,7 +58,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Logo className="h-8 w-8 text-primary" />
             <h1 className="text-xl font-headline font-semibold">Domnam</h1>
           </div>
         </SidebarHeader>
