@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 interface Plant {
@@ -81,8 +81,8 @@ export function FarmGrid() {
             >
               {grid.map((row, rIdx) =>
                 row.map((cell, cIdx) => (
-                  <Popover key={`${rIdx}-${cIdx}`}>
-                    <PopoverTrigger asChild>
+                  <Tooltip key={`${rIdx}-${cIdx}`}>
+                    <TooltipTrigger asChild>
                       <button
                         onClick={() => toggleCell(rIdx, cIdx)}
                         className={cn(
@@ -93,9 +93,9 @@ export function FarmGrid() {
                       >
                         {cell && <Sprout className="w-4 h-4 text-primary" />}
                       </button>
-                    </PopoverTrigger>
+                    </TooltipTrigger>
                     {cell && (
-                      <PopoverContent>
+                      <TooltipContent>
                         <div className="space-y-2">
                           <h4 className="font-medium leading-none">{cell.name}</h4>
                           <p className="text-sm text-muted-foreground">
@@ -105,9 +105,9 @@ export function FarmGrid() {
                             <span className="text-xs text-muted-foreground">Type: {cell.type}</span>
                           </div>
                         </div>
-                      </PopoverContent>
+                      </TooltipContent>
                     )}
-                  </Popover>
+                  </Tooltip>
                 ))
               )}
             </div>
