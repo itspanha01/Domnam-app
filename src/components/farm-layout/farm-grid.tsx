@@ -5,29 +5,43 @@ import { Sprout, Tractor } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+
+interface Plant {
+  name: string;
+  description: string;
+  type: string;
+}
 
 export function FarmGrid() {
   const [rows, setRows] = useState(8);
   const [cols, setCols] = useState(12);
-  const [grid, setGrid] = useState<number[][]>([]);
+  const [grid, setGrid] = useState<(Plant | null)[][]>([]);
   const [isMounted, setIsMounted] = useState(false);
+
+  const [plantName, setPlantName] = useState("Heirloom Tomato");
+  const [plantDescription, setPlantDescription] = useState("Rich, full-flavored tomatoes perfect for salads and sauces.");
+  const [plantType, setPlantType] = useState("Vegetable");
 
   useEffect(() => {
     setIsMounted(true);
-    setGrid(Array(8).fill(0).map(() => Array(12).fill(0)));
+    setGrid(Array(8).fill(null).map(() => Array(12).fill(null)));
   }, []);
 
   const handleGridChange = (type: "rows" | "cols", value: number) => {
     let newGrid;
     if (type === "rows") {
       setRows(value);
-      newGrid = Array(value).fill(0).map((_, r) => grid[r] || Array(cols).fill(0));
+      newGrid = Array(value).fill(null).map((_, r) => grid[r] || Array(cols).fill(null));
     } else {
       setCols(value);
       newGrid = grid.map(row => {
         const newRow = [...row];
-        while (newRow.length < value) newRow.push(0);
+        while (newRow.length < value) newRow.push(null);
         return newRow.slice(0, value);
       });
     }
@@ -36,7 +50,17 @@ export function FarmGrid() {
 
   const toggleCell = (r: number, c: number) => {
     const newGrid = grid.map(row => [...row]);
-    newGrid[r][c] = newGrid[r][c] === 1 ? 0 : 1;
+    if (newGrid[r][c]) {
+      newGrid[r][c] = null;
+    } else {
+      if (plantName && plantDescription && plantType) {
+        newGrid[r][c] = {
+          name: plantName,
+          description: plantDescription,
+          type: plantType,
+        };
+      }
+    }
     setGrid(newGrid);
   };
   
@@ -57,17 +81,33 @@ export function FarmGrid() {
             >
               {grid.map((row, rIdx) =>
                 row.map((cell, cIdx) => (
-                  <button
-                    key={`${rIdx}-${cIdx}`}
-                    onClick={() => toggleCell(rIdx, cIdx)}
-                    className={cn(
-                      "aspect-square rounded-md border border-dashed flex items-center justify-center transition-colors",
-                      cell === 1 ? "bg-primary/20 border-primary" : "hover:bg-accent/50"
+                  <Popover key={`${rIdx}-${cIdx}`}>
+                    <PopoverTrigger asChild>
+                      <button
+                        onClick={() => toggleCell(rIdx, cIdx)}
+                        className={cn(
+                          "aspect-square rounded-md border border-dashed flex items-center justify-center transition-colors",
+                          cell ? "bg-primary/20 border-primary" : "hover:bg-accent/50"
+                        )}
+                        aria-label={`Plot ${rIdx + 1}, ${cIdx + 1}`}
+                      >
+                        {cell && <Sprout className="w-4 h-4 text-primary" />}
+                      </button>
+                    </PopoverTrigger>
+                    {cell && (
+                      <PopoverContent>
+                        <div className="space-y-2">
+                          <h4 className="font-medium leading-none">{cell.name}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {cell.description}
+                          </p>
+                          <div className="flex items-center pt-2">
+                            <span className="text-xs text-muted-foreground">Type: {cell.type}</span>
+                          </div>
+                        </div>
+                      </PopoverContent>
                     )}
-                    aria-label={`Plot ${rIdx + 1}, ${cIdx + 1}`}
-                  >
-                    {cell === 1 && <Sprout className="w-4 h-4 text-primary" />}
-                  </button>
+                  </Popover>
                 ))
               )}
             </div>
@@ -80,6 +120,32 @@ export function FarmGrid() {
             <CardTitle className="font-headline">Layout Controls</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="space-y-4 p-4 border rounded-lg bg-card">
+              <h3 className="font-semibold text-lg">Current Plant</h3>
+              <div>
+                <Label htmlFor="plant-name">Plant Name</Label>
+                <Input id="plant-name" value={plantName} onChange={(e) => setPlantName(e.target.value)} placeholder="e.g., Cherry Tomato" />
+              </div>
+              <div>
+                <Label htmlFor="plant-type">Plant Type</Label>
+                <Select value={plantType} onValueChange={setPlantType}>
+                  <SelectTrigger id="plant-type">
+                    <SelectValue placeholder="Select a type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Vegetable">Vegetable</SelectItem>
+                    <SelectItem value="Fruit">Fruit</SelectItem>
+                    <SelectItem value="Herb">Herb</SelectItem>
+                    <SelectItem value="Flower">Flower</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="plant-description">Description</Label>
+                <Textarea id="plant-description" value={plantDescription} onChange={(e) => setPlantDescription(e.target.value)} placeholder="Describe the plant..." />
+              </div>
+            </div>
+
             <div>
               <Label htmlFor="rows-slider">Rows: {rows}</Label>
               <Slider
@@ -104,7 +170,7 @@ export function FarmGrid() {
             </div>
             <div className="text-sm text-muted-foreground pt-4 border-t">
               <Tractor className="inline-block mr-2 w-4 h-4" />
-              Total plots: {rows * cols}. Planted: {grid.flat().filter(c => c === 1).length}
+              Total plots: {rows * cols}. Planted: {grid.flat().filter(c => c !== null).length}
             </div>
           </CardContent>
         </Card>
