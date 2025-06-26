@@ -57,6 +57,7 @@ function Nav() {
 export function MainLayout({ children }: { children: ReactNode }) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -86,9 +87,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
         <SidebarFooter>
           <SidebarMenu>
               <SidebarMenuItem>
-                  <Button variant="ghost" className="w-full justify-start">
+                  <Button asChild variant={pathname === '/settings' ? "secondary" : "ghost"} className="w-full justify-start">
+                    <Link href="/settings">
                       <Settings className="mr-2 h-4 w-4" />
                       Settings
+                    </Link>
                   </Button>
               </SidebarMenuItem>
               <SidebarMenuItem>
