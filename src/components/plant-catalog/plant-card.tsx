@@ -71,11 +71,11 @@ export function PlantCard({ id, name, image, aiHint, description, type, onImageC
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter className="grid grid-cols-2 gap-2">
-        <Button variant="outline" className="w-full" onClick={handleButtonClick}>
+        <Button variant="outline" size="sm" className="w-full" onClick={handleButtonClick}>
           <Upload className="mr-2 h-4 w-4" />
           Change Image
         </Button>
-        <Button variant="destructive" className="w-full" onClick={() => onDeleteRequest(id)}>
+        <Button variant="destructive" size="sm" className="w-full" onClick={() => onDeleteRequest(id)}>
             <Trash2 className="mr-2 h-4 w-4" />
             Delete
         </Button>
