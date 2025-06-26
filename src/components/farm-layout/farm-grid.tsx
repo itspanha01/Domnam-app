@@ -15,7 +15,17 @@ interface Plant {
   name: string;
   description: string;
   type: string;
+  color: string;
 }
+
+const colorOptions = [
+  "#34D399", // emerald
+  "#FBBF24", // amber
+  "#60A5FA", // blue
+  "#F87171", // red
+  "#A78BFA", // violet
+  "#F472B6", // pink
+];
 
 export function FarmGrid() {
   const [rows, setRows] = useState(8);
@@ -26,6 +36,7 @@ export function FarmGrid() {
   const [plantName, setPlantName] = useState("Heirloom Tomato");
   const [plantDescription, setPlantDescription] = useState("Rich, full-flavored tomatoes perfect for salads and sauces.");
   const [plantType, setPlantType] = useState("Vegetable");
+  const [plantColor, setPlantColor] = useState(colorOptions[0]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -58,6 +69,7 @@ export function FarmGrid() {
           name: plantName,
           description: plantDescription,
           type: plantType,
+          color: plantColor,
         };
       }
     }
@@ -86,12 +98,13 @@ export function FarmGrid() {
                       <button
                         onClick={() => toggleCell(rIdx, cIdx)}
                         className={cn(
-                          "aspect-square rounded-md border border-dashed flex items-center justify-center transition-colors",
-                          cell ? "bg-primary/20 border-primary" : "hover:bg-accent/50"
+                          "aspect-square rounded-md border flex items-center justify-center transition-colors",
+                          cell ? "border-solid" : "border-dashed hover:bg-accent/50"
                         )}
+                        style={cell ? { backgroundColor: `${cell.color}33`, borderColor: cell.color } : {}}
                         aria-label={`Plot ${rIdx + 1}, ${cIdx + 1}`}
                       >
-                        {cell && <Sprout className="w-4 h-4 text-primary" />}
+                        {cell && <Sprout className="w-4 h-4" style={{ color: cell.color }} />}
                       </button>
                     </TooltipTrigger>
                     {cell && (
@@ -139,6 +152,24 @@ export function FarmGrid() {
                     <SelectItem value="Flower">Flower</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div>
+                <Label>Plant Color</Label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {colorOptions.map((color) => (
+                    <button
+                      key={color}
+                      type="button"
+                      onClick={() => setPlantColor(color)}
+                      className={cn(
+                        "w-7 h-7 rounded-full border-2 transition-transform",
+                        plantColor === color ? "border-primary scale-110" : "border-transparent"
+                      )}
+                      style={{ backgroundColor: color }}
+                      aria-label={`Select color ${color}`}
+                    />
+                  ))}
+                </div>
               </div>
               <div>
                 <Label htmlFor="plant-description">Description</Label>
