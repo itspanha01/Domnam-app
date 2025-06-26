@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -6,16 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Badge } from "@/components/ui/badge";
 
 interface PlantCardProps {
+  id: string;
   name: string;
   image: string;
-  hint: string;
+  aiHint: string;
   description: string;
-  onImageChange: (name: string, image: string) => void;
+  type: string;
+  onImageChange: (id: string, image: string) => void;
 }
 
-export function PlantCard({ name, image, hint, description, onImageChange }: PlantCardProps) {
+export function PlantCard({ id, name, image, aiHint, description, type, onImageChange }: PlantCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -39,7 +43,7 @@ export function PlantCard({ name, image, hint, description, onImageChange }: Pla
       reader.onload = (e) => {
         const result = e.target?.result as string;
         if (result) {
-          onImageChange(name, result);
+          onImageChange(id, result);
         }
       };
       reader.onerror = () => {
@@ -57,15 +61,18 @@ export function PlantCard({ name, image, hint, description, onImageChange }: Pla
     <Card className="flex flex-col">
       <CardHeader className="flex-grow">
         <div className="aspect-video relative rounded-t-lg overflow-hidden -mt-6 -mx-6 mb-4 shadow-lg">
-          <Image src={image} alt={name} fill style={{objectFit:"cover"}} data-ai-hint={hint} />
+          <Image src={image} alt={name} fill style={{objectFit:"cover"}} data-ai-hint={aiHint} />
         </div>
-        <CardTitle className="font-headline">{name}</CardTitle>
+        <div className="flex justify-between items-start gap-2">
+          <CardTitle className="font-headline">{name}</CardTitle>
+          <Badge variant="secondary" className="whitespace-nowrap shrink-0">{type}</Badge>
+        </div>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardFooter>
         <Button variant="outline" className="w-full" onClick={handleButtonClick}>
           <Upload className="mr-2 h-4 w-4" />
-          Upload New Image
+          Change Image
         </Button>
         <input
           type="file"
