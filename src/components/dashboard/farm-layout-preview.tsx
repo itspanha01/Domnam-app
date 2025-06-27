@@ -10,10 +10,12 @@ import { Sprout, LayoutGrid, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Plant } from "@/components/farm-layout/farm-grid";
 import { useLanguage } from "@/context/language-context";
+import { useToast } from "@/hooks/use-toast";
 
 export function FarmLayoutPreview() {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { toast } = useToast();
   const [layout, setLayout] = useState<{ grid: (Plant | null)[][], rows: number, cols: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,12 +28,17 @@ export function FarmLayoutPreview() {
         setLayout(savedLayout);
       } catch (error) {
         console.error("Failed to load farm layout:", error);
+        toast({
+          variant: "destructive",
+          title: t('error_loading_layout_title'),
+          description: t('error_firebase_connection'),
+        });
       } finally {
         setIsLoading(false);
       }
     }
     loadLayout();
-  }, [user]);
+  }, [user, t, toast]);
 
   return (
     <Card>
