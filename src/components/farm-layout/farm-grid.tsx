@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sprout, Tractor, Undo, Redo, Trash2, Save, Loader2 } from "lucide-react";
+import { Sprout, Tractor, Undo, Redo, Trash2, Save, Loader2, Hand } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -51,8 +51,10 @@ export function FarmGrid() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   
-  const [mode, setMode] = useState<'add' | 'remove'>('add');
+  const [mode, setMode] = useState<'add' | 'remove' | 'select'>('add');
   const [cellToDelete, setCellToDelete] = useState<{ r: number; c: number } | null>(null);
+  const [selectedCells, setSelectedCells] = useState<{ r: number; c: number }[]>([]);
+  const [isBulkDeleteConfirmOpen, setBulkDeleteConfirmOpen] = useState(false);
 
   const [plantName, setPlantName] = useState("Heirloom Tomato");
   const [plantDescription, setPlantDescription] = useState("Rich, full-flavored tomatoes perfect for salads and sauces.");
@@ -87,6 +89,10 @@ export function FarmGrid() {
       setIsLoading(false);
     }
   }, [user]);
+  
+  useEffect(() => {
+    setSelectedCells([]);
+  }, [mode]);
 
   const handleSaveLayout = () => {
     if (!user) return;
@@ -137,16 +143,26 @@ export function FarmGrid() {
   };
 
   const handleCellClick = (r: number, c: number) => {
-    const newGrid = grid.map(row => [...row]);
+    const currentGrid = history[historyIndex];
     
     if (mode === 'add') {
-      if (newGrid[r][c] === null && plantName && plantDescription && plantType) {
+      if (currentGrid[r][c] === null && plantName && plantDescription && plantType) {
+        const newGrid = currentGrid.map(row => [...row]);
         newGrid[r][c] = { name: plantName, description: plantDescription, type: plantType, color: plantColor };
         updateGrid(newGrid);
       }
     } else if (mode === 'remove') {
-      if (newGrid[r][c]) {
+      if (currentGrid[r][c]) {
         setCellToDelete({ r, c });
+      }
+    } else if (mode === 'select') {
+      if (currentGrid[r][c]) { // Can only select cells with plants
+        const isSelected = selectedCells.some(cell => cell.r === r && cell.c === c);
+        if (isSelected) {
+            setSelectedCells(prev => prev.filter(cell => !(cell.r === r && cell.c === c)));
+        } else {
+            setSelectedCells(prev => [...prev, { r, c }]);
+        }
       }
     }
   };
@@ -158,6 +174,17 @@ export function FarmGrid() {
     newGrid[r][c] = null;
     updateGrid(newGrid);
     setCellToDelete(null);
+  };
+  
+  const handleConfirmBulkDelete = () => {
+    if (selectedCells.length === 0) return;
+    const newGrid = grid.map(row => [...row]);
+    selectedCells.forEach(({ r, c }) => {
+      newGrid[r][c] = null;
+    });
+    updateGrid(newGrid);
+    setSelectedCells([]);
+    setBulkDeleteConfirmOpen(false);
   };
 
   const handleUndo = () => historyIndex > 0 && setHistoryIndex(historyIndex - 1);
@@ -182,36 +209,39 @@ export function FarmGrid() {
                 style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
               >
                 {grid.map((row, rIdx) =>
-                  row.map((cell, cIdx) => (
-                    <Tooltip key={`${rIdx}-${cIdx}`} delayDuration={100}>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={() => handleCellClick(rIdx, cIdx)}
-                          className={cn(
-                            "aspect-square rounded-md border flex items-center justify-center transition-all",
-                            cell ? "border-solid" : "border-dashed",
-                            mode === 'add' && !cell && "hover:bg-accent/50 cursor-pointer",
-                            mode === 'remove' && cell && "hover:bg-destructive/20 hover:border-destructive cursor-pointer",
-                            !cell && "cursor-pointer", cell && "cursor-not-allowed",
-                            mode === 'remove' && "cursor-pointer"
-                          )}
-                          style={cell ? { backgroundColor: `${cell.color}33`, borderColor: cell.color } : {}}
-                          aria-label={`Plot ${rIdx + 1}, ${cIdx + 1}`}
-                        >
-                          {cell && <Sprout className="w-4 h-4" style={{ color: cell.color }} />}
-                        </button>
-                      </TooltipTrigger>
-                      {cell && (
-                        <TooltipContent>
-                          <div className="space-y-1">
-                            <h4 className="font-medium leading-none">{cell.name}</h4>
-                            <p className="text-sm text-muted-foreground">{cell.description}</p>
-                            <div className="flex items-center pt-1"><span className="text-xs text-muted-foreground">{t('plant_type_label')}: {cell.type}</span></div>
-                          </div>
-                        </TooltipContent>
-                      )}
-                    </Tooltip>
-                  ))
+                  row.map((cell, cIdx) => {
+                    const isSelected = selectedCells.some(sel => sel.r === rIdx && sel.c === cIdx);
+                    return (
+                        <Tooltip key={`${rIdx}-${cIdx}`} delayDuration={100}>
+                        <TooltipTrigger asChild>
+                            <button
+                            onClick={() => handleCellClick(rIdx, cIdx)}
+                            className={cn(
+                                "aspect-square rounded-md border flex items-center justify-center transition-all",
+                                cell ? "border-solid" : "border-dashed",
+                                isSelected && "ring-2 ring-primary ring-offset-background",
+                                (mode === 'add' && !cell) && 'hover:bg-accent/50 cursor-pointer',
+                                (mode === 'remove' && cell) && 'hover:bg-destructive/20 hover:border-destructive cursor-pointer',
+                                (mode === 'select' && cell) && 'cursor-pointer hover:bg-primary/20'
+                            )}
+                            style={cell ? { backgroundColor: `${cell.color}33`, borderColor: cell.color } : {}}
+                            aria-label={`Plot ${rIdx + 1}, ${cIdx + 1}`}
+                            >
+                            {cell && <Sprout className="w-4 h-4" style={{ color: cell.color }} />}
+                            </button>
+                        </TooltipTrigger>
+                        {cell && (
+                            <TooltipContent>
+                            <div className="space-y-1">
+                                <h4 className="font-medium leading-none">{cell.name}</h4>
+                                <p className="text-sm text-muted-foreground">{cell.description}</p>
+                                <div className="flex items-center pt-1"><span className="text-xs text-muted-foreground">{t('plant_type_label')}: {cell.type}</span></div>
+                            </div>
+                            </TooltipContent>
+                        )}
+                        </Tooltip>
+                    )
+                  })
                 )}
               </div>
             </CardContent>
@@ -234,11 +264,18 @@ export function FarmGrid() {
               <div className="space-y-4">
                   <div className="space-y-2">
                       <Label>{t('editor_mode_label')}</Label>
-                      <RadioGroup value={mode} onValueChange={(v) => setMode(v as 'add'|'remove')} className="grid grid-cols-2 gap-2">
+                      <RadioGroup value={mode} onValueChange={(v) => setMode(v as 'add' | 'remove' | 'select')} className="grid grid-cols-3 gap-2">
                           <Label htmlFor="mode-add" className={cn("flex items-center justify-center gap-2 p-3 border rounded-md cursor-pointer transition-colors", mode === 'add' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-accent/50')}><Sprout className="h-4 w-4" /> {t('add_mode')}<RadioGroupItem value="add" id="mode-add" className="sr-only" /></Label>
                           <Label htmlFor="mode-remove" className={cn("flex items-center justify-center gap-2 p-3 border rounded-md cursor-pointer transition-colors", mode === 'remove' ? 'bg-destructive text-destructive-foreground border-destructive' : 'hover:bg-accent/50')}><Trash2 className="h-4 w-4" /> {t('remove_mode')}<RadioGroupItem value="remove" id="mode-remove" className="sr-only" /></Label>
+                          <Label htmlFor="mode-select" className={cn("flex items-center justify-center gap-2 p-3 border rounded-md cursor-pointer transition-colors", mode === 'select' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-accent/50')}><Hand className="h-4 w-4" /> {t('select_mode')}<RadioGroupItem value="select" id="mode-select" className="sr-only" /></Label>
                       </RadioGroup>
                   </div>
+                  {mode === 'select' && selectedCells.length > 0 && (
+                     <Button variant="destructive" onClick={() => setBulkDeleteConfirmOpen(true)} className="w-full">
+                        <Trash2 className="mr-2 h-4 w-4" /> 
+                        {t('delete_selected_button', { count: selectedCells.length.toString() })}
+                    </Button>
+                  )}
                   <div className="flex items-center gap-2">
                       <Button variant="outline" onClick={handleUndo} disabled={historyIndex === 0} className="w-full"><Undo className="mr-2 h-4 w-4" />{t('undo_button')}</Button>
                       <Button variant="outline" onClick={handleRedo} disabled={historyIndex >= history.length - 1} className="w-full"><Redo className="mr-2 h-4 w-4" />{t('redo_button')}</Button>
@@ -247,7 +284,7 @@ export function FarmGrid() {
 
               <Separator />
 
-              <div className={cn("space-y-4 transition-opacity", mode === 'remove' && 'opacity-50 pointer-events-none')}>
+              <div className={cn("space-y-4 transition-opacity", (mode === 'remove' || mode === 'select') && 'opacity-50 pointer-events-none')}>
                 <h3 className="font-semibold text-lg px-1">{t('current_plant_heading')}</h3>
                 <div className="space-y-4 p-4 border rounded-lg bg-card">
                   <div><Label htmlFor="plant-name">{t('plant_name_label')}</Label><Input id="plant-name" value={plantName} onChange={(e) => setPlantName(e.target.value)} placeholder={t('plant_name_placeholder')} /></div>
@@ -291,6 +328,21 @@ export function FarmGrid() {
           <AlertDialogContent>
               <AlertDialogHeader><AlertDialogTitle>{t('delete_plot_confirmation_title')}</AlertDialogTitle><AlertDialogDescription>{t('delete_plot_confirmation_description')}</AlertDialogDescription></AlertDialogHeader>
               <AlertDialogFooter><AlertDialogCancel>{t('cancel_button')}</AlertDialogCancel><AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t('delete_button')}</AlertDialogAction></AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+
+        <AlertDialog open={isBulkDeleteConfirmOpen} onOpenChange={setBulkDeleteConfirmOpen}>
+          <AlertDialogContent>
+              <AlertDialogHeader>
+                  <AlertDialogTitle>{t('bulk_delete_confirmation_title')}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t('bulk_delete_confirmation_description_plural', { count: selectedCells.length.toString() })}
+                  </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                  <AlertDialogCancel onClick={() => setBulkDeleteConfirmOpen(false)}>{t('cancel_button')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleConfirmBulkDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t('delete_button')}</AlertDialogAction>
+              </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>

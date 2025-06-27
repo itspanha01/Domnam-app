@@ -102,6 +102,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     editor_mode_label: 'Editor Mode',
     add_mode: 'Add',
     remove_mode: 'Remove',
+    select_mode: 'Select',
     undo_button: 'Undo',
     redo_button: 'Redo',
     current_plant_heading: 'Current Plant',
@@ -126,6 +127,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     layout_saved_description: 'Your farm layout has been saved to this browser.',
     error_saving_layout_title: 'Error Saving Layout',
     error_saving_layout_description: 'Could not save your layout to this browser. Please try again.',
+    delete_selected_button: 'Delete Selected ({count})',
+    bulk_delete_confirmation_title: 'Delete Selected Plants?',
+    bulk_delete_confirmation_description_plural: 'Are you sure you want to delete the {count} selected plants? This action cannot be undone.',
 
 
     // Plant Catalog Page
@@ -339,6 +343,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     editor_mode_label: 'របៀបកែប្រែ',
     add_mode: 'បន្ថែម',
     remove_mode: 'ដកចេញ',
+    select_mode: 'ជ្រើសរើស',
     undo_button: 'មិនធ្វើវិញ',
     redo_button: 'ធ្វើវិញ',
     current_plant_heading: 'ដំណាំបច្ចុប្បន្ន',
@@ -363,6 +368,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     layout_saved_description: 'ប្លង់កសិដ្ឋានរបស់អ្នកត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីរុករកនេះ។',
     error_saving_layout_title: 'បញ្ហាក្នុងការរក្សាទុកប្លង់',
     error_saving_layout_description: 'មិនអាចរក្សាទុកប្លង់របស់អ្នកទៅកម្មវិធីរុករកនេះបានទេ។ សូមព្យាយាមម្តងទៀត។',
+    delete_selected_button: 'លុបការជ្រើសរើស ({count})',
+    bulk_delete_confirmation_title: 'លុបដំណាំដែលបានជ្រើសរើស?',
+    bulk_delete_confirmation_description_plural: 'តើអ្នកប្រាកដទេថាចង់លុបដំណាំ {count} ដែលបានជ្រើសរើស? សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។',
 
 
     // Plant Catalog Page
@@ -576,6 +584,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     editor_mode_label: '编辑器模式',
     add_mode: '添加',
     remove_mode: '移除',
+    select_mode: '选择',
     undo_button: '撤销',
     redo_button: '重做',
     current_plant_heading: '当前植物',
@@ -600,6 +609,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     layout_saved_description: '您的农场布局已保存在此浏览器中。',
     error_saving_layout_title: '保存布局时出错',
     error_saving_layout_description: '无法将您的布局保存到此浏览器。请重试。',
+    delete_selected_button: '删除所选 ({count})',
+    bulk_delete_confirmation_title: '删除所选植物？',
+    bulk_delete_confirmation_description_plural: '您确定要删除所选的 {count} 株植物吗？此操作无法撤销。',
+
+    // Plant Catalog
     plant_catalog_title: '植物目录',
     plant_catalog_description: '浏览可用植物并将其添加到您的农场。',
     search_placeholder: '搜索植物...',
