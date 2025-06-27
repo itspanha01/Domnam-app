@@ -10,7 +10,7 @@ export default function FarmLayoutPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-headline font-bold">{t('farm_layout_title')}</h1>
         <p className="text-muted-foreground">
-          {t('farm_layout_description')}
+          {t('farm_layout_description_firebase')}
         </p>
       </div>
       <FarmGrid />

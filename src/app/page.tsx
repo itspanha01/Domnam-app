@@ -1,6 +1,7 @@
 "use client";
 
 import { AiTipAdvisor } from "@/components/dashboard/ai-tip-advisor";
+import { FarmLayoutPreview } from "@/components/dashboard/farm-layout-preview";
 import { FarmSummaryChart } from "@/components/dashboard/farm-summary-chart";
 import { PlantHealthCard } from "@/components/dashboard/plant-health-card";
 import { WeatherCard } from "@/components/dashboard/weather-card";
@@ -23,6 +24,7 @@ export default function DashboardPage() {
           <PlantHealthCard />
         </div>
         <FarmSummaryChart />
+        <FarmLayoutPreview />
       </div>
       <div className="lg:col-span-1">
         <AiTipAdvisor />

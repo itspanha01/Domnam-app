@@ -6,6 +6,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     // General
     cancel_button: 'Cancel',
     delete_button: 'Delete',
+    saving_button: 'Saving...',
+    save_layout_button: 'Save Layout',
     
     // Language names
     english: 'English',
@@ -80,11 +82,19 @@ export const translations: Record<Locale, Record<string, string>> = {
     generating_button: 'Generating...',
     error_generating_tip_title: "Error",
     error_generating_tip_description: "Couldn't generate a tip right now. Please try again later.",
+    // Farm Layout Preview
+    farm_layout_preview_title: 'Farm Layout',
+    farm_layout_preview_description: 'A quick look at your saved farm plan.',
+    edit_layout_button: 'Edit Layout',
+    no_layout_saved_title: "No layout saved yet",
+    no_layout_saved_description: "Go to the Farm Layout page to design your farm.",
     
     // Farm Layout Page
     farm_layout_title: 'Farm Layout Designer',
+    farm_layout_description_firebase: "Design your farm and save the layout to the cloud. Your last saved layout will be loaded automatically.",
     farm_layout_description: 'Plan your farm layout by adjusting the grid and clicking on cells to toggle plants.',
     layout_controls_title: 'Layout Controls',
+    cloud_save_description: 'Your layout is saved securely in the cloud.',
     editor_mode_label: 'Editor Mode',
     add_mode: 'Add',
     remove_mode: 'Remove',
@@ -108,6 +118,15 @@ export const translations: Record<Locale, Record<string, string>> = {
     plots_planted: 'Planted: {count}',
     delete_plot_confirmation_title: 'Are you sure?',
     delete_plot_confirmation_description: 'This action cannot be undone. This will permanently remove the plant from this plot.',
+    layout_loaded_title: 'Layout Loaded',
+    layout_loaded_description: 'Your saved farm layout has been loaded.',
+    error_loading_layout_title: 'Error Loading Layout',
+    error_loading_layout_description: 'Could not load your saved layout. Using a default grid.',
+    layout_saved_title: 'Layout Saved',
+    layout_saved_description: 'Your farm layout has been saved successfully.',
+    error_saving_layout_title: 'Error Saving Layout',
+    error_saving_layout_description: 'Could not save your layout. Please try again.',
+
 
     // Plant Catalog Page
     plant_catalog_title: 'Plant Catalog',
@@ -198,6 +217,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     // General
     cancel_button: 'បោះបង់',
     delete_button: 'លុប',
+    saving_button: 'កំពុងរក្សាទុក...',
+    save_layout_button: 'រក្សាទុកប្លង់',
     
     // Language names
     english: 'English',
@@ -272,11 +293,19 @@ export const translations: Record<Locale, Record<string, string>> = {
     generating_button: 'កំពុងបង្កើត...',
     error_generating_tip_title: "មានបញ្ហា",
     error_generating_tip_description: "មិនអាចបង្កើតដំបូន្មានបានទេនាពេលនេះ។ សូមព្យាយាមម្តងទៀត។",
+    // Farm Layout Preview
+    farm_layout_preview_title: 'ប្លង់កសិដ្ឋាន',
+    farm_layout_preview_description: 'ទិដ្ឋភាពរហ័សនៃផែនការកសិដ្ឋានដែលបានរក្សាទុករបស់អ្នក។',
+    edit_layout_button: 'កែសម្រួលប្លង់',
+    no_layout_saved_title: "មិនទាន់មានប្លង់ដែលបានរក្សាទុកទេ",
+    no_layout_saved_description: "ចូលទៅកាន់ទំព័រប្លង់កសិដ្ឋានដើម្បីរចនាកសិដ្ឋានរបស់អ្នក។",
     
     // Farm Layout Page
     farm_layout_title: 'អ្នករចនាប្លង់កសិដ្ឋាន',
+    farm_layout_description_firebase: "រចនាកសិដ្ឋានរបស់អ្នក ហើយរក្សាទុកប្លង់ទៅក្នុង cloud។ ប្លង់ដែលបានរក្សាទុកចុងក្រោយរបស់អ្នកនឹងត្រូវបានផ្ទុកដោយស្វ័យប្រវត្តិ។",
     farm_layout_description: 'រៀបចំប្លង់កសិដ្ឋានរបស់អ្នកដោយកែតម្រូវក្រឡាចត្រង្គ ហើយចុចលើក្រឡាដើម្បីបិទបើករុក្ខជាតិ។',
     layout_controls_title: 'ឧបករណ៍បញ្ជាប្លង់',
+    cloud_save_description: 'ប្លង់របស់អ្នកត្រូវបានរក្សាទុកដោយសុវត្ថិភាពនៅក្នុង cloud។',
     editor_mode_label: 'របៀបកែប្រែ',
     add_mode: 'បន្ថែម',
     remove_mode: 'ដកចេញ',
@@ -300,6 +329,15 @@ export const translations: Record<Locale, Record<string, string>> = {
     plots_planted: 'បានដាំ៖ {count}',
     delete_plot_confirmation_title: 'តើអ្នកពិតជាចង់លុបមែនទេ?',
     delete_plot_confirmation_description: 'សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។ វានឹងដកដំណាំចេញពីឡូតិ៍នេះជាអចិន្ត្រៃយ៍។',
+    layout_loaded_title: 'ប្លង់ត្រូវបានផ្ទុក',
+    layout_loaded_description: 'ប្លង់កសិដ្ឋានដែលបានរក្សាទុករបស់អ្នកត្រូវបានផ្ទុក។',
+    error_loading_layout_title: 'បញ្ហាក្នុងការផ្ទុកប្លង់',
+    error_loading_layout_description: 'មិនអាចផ្ទុកប្លង់ដែលបានរក្សាទុករបស់អ្នកបានទេ។ កំពុងប្រើក្រឡាចត្រង្គលំនាំដើម។',
+    layout_saved_title: 'ប្លង់ត្រូវបានរក្សាទុក',
+    layout_saved_description: 'ប្លង់កសិដ្ឋានរបស់អ្នកត្រូវបានរក្សាទុកដោយជោគជ័យ។',
+    error_saving_layout_title: 'បញ្ហាក្នុងការរក្សាទុកប្លង់',
+    error_saving_layout_description: 'មិនអាចរក្សាទុកប្លង់របស់អ្នកបានទេ។ សូមព្យាយាមម្តងទៀត។',
+
 
     // Plant Catalog Page
     plant_catalog_title: 'កាតាឡុកដំណាំ',
@@ -390,6 +428,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     // General
     cancel_button: '取消',
     delete_button: '删除',
+    saving_button: '保存中...',
+    save_layout_button: '保存布局',
     english: 'English',
     khmer: 'ខ្មែរ (Khmer)',
     chinese: '中文 (Chinese)',
@@ -450,9 +490,16 @@ export const translations: Record<Locale, Record<string, string>> = {
     generating_button: '生成中...',
     error_generating_tip_title: "错误",
     error_generating_tip_description: "现在无法生成提示。请稍后再试。",
+    farm_layout_preview_title: '农场布局',
+    farm_layout_preview_description: '快速查看您保存的农场计划。',
+    edit_layout_button: '编辑布局',
+    no_layout_saved_title: "尚未保存布局",
+    no_layout_saved_description: "前往农场布局页面设计您的农场。",
     farm_layout_title: '农场布局设计器',
+    farm_layout_description_firebase: "设计您的农场并将布局保存到云端。您上次保存的布局将自动加载。",
     farm_layout_description: '通过调整网格并单击单元格来切换植物，规划您的农场布局。',
     layout_controls_title: '布局控件',
+    cloud_save_description: '您的布局已安全地保存在云端。',
     editor_mode_label: '编辑器模式',
     add_mode: '添加',
     remove_mode: '移除',
@@ -476,6 +523,14 @@ export const translations: Record<Locale, Record<string, string>> = {
     plots_planted: '已种植: {count}',
     delete_plot_confirmation_title: '你确定吗？',
     delete_plot_confirmation_description: '此操作无法撤销。这将永久从此地块移除该植物。',
+    layout_loaded_title: '布局已加载',
+    layout_loaded_description: '您保存的农场布局已加载。',
+    error_loading_layout_title: '加载布局时出错',
+    error_loading_layout_description: '无法加载您保存的布局。正在使用默认网格。',
+    layout_saved_title: '布局已保存',
+    layout_saved_description: '您的农场布局已成功保存。',
+    error_saving_layout_title: '保存布局时出错',
+    error_saving_layout_description: '无法保存您的布局。请重试。',
     plant_catalog_title: '植物目录',
     plant_catalog_description: '浏览可用植物并将其添加到您的农场。',
     search_placeholder: '搜索植物...',
