@@ -78,7 +78,10 @@ export function FarmGrid() {
       }
     } catch (error) {
       console.error("Failed to load layout:", error);
-      toast({ variant: "destructive", title: t('error_loading_layout_title'), description: t('error_loading_layout_description') });
+      const errorMessage = error instanceof Error && error.message.toLowerCase().includes('offline')
+        ? t('error_firebase_connection')
+        : t('error_loading_layout_description');
+      toast({ variant: "destructive", title: t('error_loading_layout_title'), description: errorMessage });
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +95,10 @@ export function FarmGrid() {
       toast({ title: t('layout_saved_title'), description: t('layout_saved_description') });
     } catch (error) {
       console.error("Failed to save layout:", error);
-      toast({ variant: "destructive", title: t('error_saving_layout_title'), description: t('error_saving_layout_description') });
+      const errorMessage = error instanceof Error && error.message.toLowerCase().includes('offline')
+        ? t('error_firebase_connection')
+        : t('error_saving_layout_description');
+      toast({ variant: "destructive", title: t('error_saving_layout_title'), description: errorMessage });
     } finally {
       setIsSaving(false);
     }
