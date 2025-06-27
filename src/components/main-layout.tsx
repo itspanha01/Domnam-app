@@ -26,6 +26,7 @@ import {
   LogOut,
   Loader2,
   MessageSquare,
+  BarChart,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import {
@@ -48,6 +49,7 @@ function Nav() {
     { href: "/", label: t('dashboard'), icon: Home, tooltip: t('dashboard') },
     { href: "/farm-layout", label: t('farm_layout'), icon: LayoutGrid, tooltip: t('farm_layout') },
     { href: "/plant-catalog", label: t('plant_catalog'), icon: Sprout, tooltip: t('plant_catalog') },
+    { href: "/yield-tracker", label: t('yield_tracker'), icon: BarChart, tooltip: t('yield_tracker') },
     { href: "/discussion", label: t('discussion'), icon: MessageSquare, tooltip: t('discussion') },
   ];
 

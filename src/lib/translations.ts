@@ -1,4 +1,5 @@
 
+
 export type Locale = 'en' | 'km' | 'zh';
 
 export const translations: Record<Locale, Record<string, string>> = {
@@ -8,6 +9,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     delete_button: 'Delete',
     saving_button: 'Saving...',
     save_layout_button: 'Save Layout',
+    edit_button: 'Edit',
     
     // Language names
     english: 'English',
@@ -18,6 +20,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     dashboard: 'Dashboard',
     farm_layout: 'Farm Layout',
     plant_catalog: 'Plant Catalog',
+    yield_tracker: 'Yield Tracker',
     discussion: 'Discussion',
 
     // Header User Menu
@@ -58,8 +61,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     nutrient_level: 'Nutrient Level',
     // Yield Summary Chart
     yield_summary_title: 'Yield Summary',
-    yield_summary_description: "Last month's crop yield",
+    yield_summary_description_dynamic: "A summary of your total yield per crop.",
     yield_label: 'Yield (kg)',
+    no_yield_data_chart: 'No yield data to display. Add your first harvest to see a summary.',
+    track_yields_button: 'Track Yields',
     // AI Tip Advisor
     ai_advisor_title: 'AI Tip Advisor',
     ai_advisor_description: 'Get AI-powered tips for your crops based on current conditions.',
@@ -117,10 +122,6 @@ export const translations: Record<Locale, Record<string, string>> = {
     plots_planted: 'Planted: {count}',
     delete_plot_confirmation_title: 'Are you sure?',
     delete_plot_confirmation_description: 'This action cannot be undone. This will permanently remove the plant from this plot.',
-    layout_loaded_title: 'Layout Loaded',
-    layout_loaded_description: 'Your saved farm layout has been loaded.',
-    error_loading_layout_title: 'Error Loading Layout',
-    error_loading_layout_description: 'Could not load your saved layout. Using a default grid.',
     layout_saved_title: 'Layout Saved',
     layout_saved_description: 'Your farm layout has been saved to this browser.',
     error_saving_layout_title: 'Error Saving Layout',
@@ -167,6 +168,33 @@ export const translations: Record<Locale, Record<string, string>> = {
     error_reading_file_description: 'Could not process the image. Please try again.',
     invalid_file_type_title: 'Invalid File Type',
     invalid_file_type_description_image: 'Please select an image file.',
+
+    // Yield Tracker Page
+    yield_tracker_title: 'Yield Tracker',
+    yield_tracker_description: 'Log and manage your crop yields over time.',
+    add_yield_entry_button: 'Add Yield Entry',
+    add_or_edit_yield_entry_dialog_title: 'Add/Edit Yield Entry',
+    add_or_edit_yield_entry_dialog_description: 'Log a harvest from your farm or update an existing one.',
+    crop_name_label: 'Crop Name',
+    crop_name_placeholder: 'e.g., Heirloom Tomato',
+    yield_amount_label: 'Yield Amount (kg)',
+    yield_amount_placeholder: 'e.g., 50',
+    harvest_date_label: 'Harvest Date',
+    notes_label: 'Notes',
+    notes_optional: '(Optional)',
+    notes_placeholder: 'Any details about this harvest...',
+    add_entry_button: 'Add Entry',
+    update_entry_button: 'Update Entry',
+    yield_log_title: 'Yield Log',
+    no_yield_data_title: 'No Yield Data Yet',
+    no_yield_data_description: 'Start by adding your first yield entry.',
+    table_header_crop: 'Crop',
+    table_header_yield: 'Yield (kg)',
+    table_header_date: 'Date',
+    table_header_actions: 'Actions',
+    delete_entry_confirmation_title: 'Are you sure?',
+    delete_entry_confirmation_description: 'This will permanently delete the yield entry for "{cropName}". This action cannot be undone.',
+    pick_a_date: "Pick a date",
 
     // Discussion Page
     discussion_title: 'Community Discussion',
@@ -218,6 +246,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     delete_button: 'លុប',
     saving_button: 'កំពុងរក្សាទុក...',
     save_layout_button: 'រក្សាទុកប្លង់',
+    edit_button: 'កែសម្រួល',
     
     // Language names
     english: 'English',
@@ -228,6 +257,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     dashboard: 'ផ្ទាំងគ្រប់គ្រង',
     farm_layout: 'ប្លង់កសិដ្ឋាន',
     plant_catalog: 'កាតាឡុកដំណាំ',
+    yield_tracker: 'តាមដានទិន្នផល',
     discussion: 'ការពិភាក្សា',
 
     // Header User Menu
@@ -268,8 +298,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     nutrient_level: 'កម្រិតជីវជាតិ',
     // Yield Summary Chart
     yield_summary_title: 'សរុបទិន្នផល',
-    yield_summary_description: "ទិន្នផលដំណាំខែមុន",
+    yield_summary_description_dynamic: "សេចក្ដីសង្ខេបនៃទិន្នផលសរុបរបស់អ្នកក្នុងមួយដំណាំ។",
     yield_label: 'ទិន្នផល (គីឡូក្រាម)',
+    no_yield_data_chart: 'មិនមានទិន្នន័យទិន្នផលដើម្បីបង្ហាញទេ។ បន្ថែមការប្រមូលផលដំបូងរបស់អ្នកដើម្បីមើលតារាងសង្ខេប។',
+    track_yields_button: 'តាមដានទិន្នផល',
     // AI Tip Advisor
     ai_advisor_title: 'ទីប្រឹក្សា AI',
     ai_advisor_description: 'ទទួលយកដំបូន្មានពី AI សម្រាប់ដំណាំរបស់អ្នកផ្អែកលើលក្ខខណ្ឌបច្ចុប្បន្ន។',
@@ -327,10 +359,6 @@ export const translations: Record<Locale, Record<string, string>> = {
     plots_planted: 'បានដាំ៖ {count}',
     delete_plot_confirmation_title: 'តើអ្នកពិតជាចង់លុបមែនទេ?',
     delete_plot_confirmation_description: 'សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។ វានឹងដកដំណាំចេញពីឡូតិ៍នេះជាអចិន្ត្រៃយ៍។',
-    layout_loaded_title: 'ប្លង់ត្រូវបានផ្ទុក',
-    layout_loaded_description: 'ប្លង់កសិដ្ឋានដែលបានរក្សាទុករបស់អ្នកត្រូវបានផ្ទុក។',
-    error_loading_layout_title: 'បញ្ហាក្នុងការផ្ទុកប្លង់',
-    error_loading_layout_description: 'មិនអាចផ្ទុកប្លង់ដែលបានរក្សាទុករបស់អ្នកបានទេ។ កំពុងប្រើក្រឡាចត្រង្គលំនាំដើម។',
     layout_saved_title: 'ប្លង់ត្រូវបានរក្សាទុក',
     layout_saved_description: 'ប្លង់កសិដ្ឋានរបស់អ្នកត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីរុករកនេះ។',
     error_saving_layout_title: 'បញ្ហាក្នុងការរក្សាទុកប្លង់',
@@ -364,19 +392,46 @@ export const translations: Record<Locale, Record<string, string>> = {
     add_plant_dialog_title: 'បន្ថែមដំណាំថ្មី',
     add_plant_dialog_description: 'បំពេញព័ត៌មានលម្អិតសម្រាប់ដំណាំថ្មីរបស់អ្នកដើម្បីបន្ថែមទៅកាតាឡុក។',
     plant_image_label: 'រូបភាពដំណាំ',
-    plant_image_optional: '(មិនบังคับ)',
+    plant_image_optional: '(ស្រេចចិត្ត)',
     upload_an_image: 'ផ្ទុករូបភាពឡើង',
-    plant_type_optional: '(មិនบังคับ)',
-    plant_description_optional: '(មិនบังคับ)',
+    plant_type_optional: '(ស្រេចចិត្ត)',
+    plant_description_optional: '(ស្រេចចិត្ត)',
     plant_description_placeholder: 'ពិពណ៌នាអំពីលក្ខណៈនិងតម្រូវការថែទាំរបស់ដំណាំ។',
     ai_hint_label: 'តម្រុយរូបភាព AI',
-    ai_hint_optional: '(មិនบังคับ)',
+    ai_hint_optional: '(ស្រេចចិត្ត)',
     ai_hint_placeholder: 'ឧ. "ដើមប៉េងប៉ោះ" ឬ "ផើងជីរនាងវង"',
     add_plant_button: 'បន្ថែមដំណាំ',
     error_reading_file_title: 'បញ្ហាក្នុងការអានឯកសារ',
     error_reading_file_description: 'មិនអាចដំណើរការរូបភាពបានទេ។ សូមព្យាយាមម្តងទៀត។',
     invalid_file_type_title: 'ប្រភេទឯកសារមិនត្រឹមត្រូវ',
     invalid_file_type_description_image: 'សូមជ្រើសរើសឯកសាររូបភាព។',
+
+    // Yield Tracker Page
+    yield_tracker_title: 'តាមដានទិន្នផល',
+    yield_tracker_description: 'កត់ត្រានិងគ្រប់គ្រងទិន្នផលដំណាំរបស់អ្នកតាមពេលវេលា។',
+    add_yield_entry_button: 'បន្ថែមទិន្នន័យទិន្នផល',
+    add_or_edit_yield_entry_dialog_title: 'បន្ថែម/កែសម្រួលទិន្នន័យទិន្នផល',
+    add_or_edit_yield_entry_dialog_description: 'កត់ត្រាការប្រមូលផលថ្មីពីកសិដ្ឋានរបស់អ្នក ឬធ្វើបច្ចុប្បន្នភាពទិន្នន័យដែលមានស្រាប់។',
+    crop_name_label: 'ឈ្មោះដំណាំ',
+    crop_name_placeholder: 'ឧ. ប៉េងប៉ោះស្រុក',
+    yield_amount_label: 'បរិមាណទិន្នផល (គីឡូក្រាម)',
+    yield_amount_placeholder: 'ឧ. 50',
+    harvest_date_label: 'កាលបរិច្ឆេទប្រមូលផល',
+    notes_label: 'កំណត់ចំណាំ',
+    notes_optional: '(ស្រេចចិត្ត)',
+    notes_placeholder: 'ព័ត៌មានលម្អិតអំពីការប្រមូលផលនេះ...',
+    add_entry_button: 'បន្ថែមទិន្នន័យ',
+    update_entry_button: 'ធ្វើបច្ចុប្បន្នភាពទិន្នន័យ',
+    yield_log_title: 'កំណត់ត្រាទិន្នផល',
+    no_yield_data_title: 'មិនទាន់មានទិន្នន័យទិន្នផលទេ',
+    no_yield_data_description: 'ចាប់ផ្តើមដោយការបន្ថែមទិន្នន័យទិន្នផលដំបូងរបស់អ្នក។',
+    table_header_crop: 'ដំណាំ',
+    table_header_yield: 'ទិន្នផល (គីឡូក្រាម)',
+    table_header_date: 'កាលបរិច្ឆេទ',
+    table_header_actions: 'សកម្មភាព',
+    delete_entry_confirmation_title: 'តើអ្នកពិតជាចង់លុបមែនទេ?',
+    delete_entry_confirmation_description: 'វានឹងលុបទិន្នន័យទិន្នផលសម្រាប់ "{cropName}" ជាអចិន្ត្រៃយ៍។ សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។',
+    pick_a_date: "ជ្រើសរើសកាលបរិច្ឆេទ",
 
     // Discussion Page
     discussion_title: 'ការពិភាក្សាក្នុងសហគមន៍',
@@ -428,16 +483,26 @@ export const translations: Record<Locale, Record<string, string>> = {
     delete_button: '删除',
     saving_button: '保存中...',
     save_layout_button: '保存布局',
+    edit_button: '编辑',
+
+    // Language names
     english: 'English',
     khmer: 'ខ្មែរ (Khmer)',
     chinese: '中文 (Chinese)',
+
+    // Sidebar
     dashboard: '仪表板',
     farm_layout: '农场布局',
     plant_catalog: '植物目录',
+    yield_tracker: '产量追踪',
     discussion: '讨论区',
+
+    // Header User Menu
     settings: '设置',
     logout: '登出',
     welcome_back_user: '欢迎回来！',
+
+    // Login Page
     login_welcome: '欢迎回来！',
     login_create_account: '创建账户',
     login_description: '输入您的凭据来管理您的农场。',
@@ -453,10 +518,14 @@ export const translations: Record<Locale, Record<string, string>> = {
     error_passwords_mismatch: '密码不匹配。',
     error_username_exists: '用户名已存在。',
     error_invalid_credentials: '用户名或密码无效。',
+    
+    // Dashboard Page
     dashboard_greeting: '你好, {username}! 这是您的农场概览。',
+    // Weather Card
     weather_card_title: '当前天气',
     weather_sunny: '晴天',
     weather_feels_like: '体感温度 {degrees}°C',
+    // Plant Health Card
     plant_health_card_title: '植物健康',
     health_excellent: '优秀',
     health_overall_healthy: '总体健康',
@@ -464,9 +533,13 @@ export const translations: Record<Locale, Record<string, string>> = {
     health_critical: '危急',
     soil_moisture: '土壤湿度',
     nutrient_level: '营养水平',
+    // Yield Summary Chart
     yield_summary_title: '产量摘要',
-    yield_summary_description: '上个月的作物产量',
+    yield_summary_description_dynamic: '每种作物的总产量摘要。',
     yield_label: '产量 (公斤)',
+    no_yield_data_chart: '无产量数据显示。添加您的第一次收获以查看摘要图表。',
+    track_yields_button: '追踪产量',
+    // AI Tip Advisor
     ai_advisor_title: 'AI 顾问',
     ai_advisor_description: '根据当前情况获取针对您作物的 AI 提示。',
     plant_type_label: '植物类型',
@@ -488,11 +561,14 @@ export const translations: Record<Locale, Record<string, string>> = {
     generating_button: '生成中...',
     error_generating_tip_title: "错误",
     error_generating_tip_description: "现在无法生成提示。请稍后再试。",
+    // Farm Layout Preview
     farm_layout_preview_title: '农场布局',
     farm_layout_preview_description: '快速查看您保存的农场计划。',
     edit_layout_button: '编辑布局',
     no_layout_saved_title: "尚未保存布局",
     no_layout_saved_description: "前往农场布局页面设计您的农场。",
+
+    // Farm Layout Page
     farm_layout_title: '农场布局设计器',
     farm_layout_description: "设计您的农场并将布局保存到您的设备。您上次保存的布局将自动加载。",
     layout_controls_title: '布局控件',
@@ -520,10 +596,6 @@ export const translations: Record<Locale, Record<string, string>> = {
     plots_planted: '已种植: {count}',
     delete_plot_confirmation_title: '你确定吗？',
     delete_plot_confirmation_description: '此操作无法撤销。这将永久从此地块移除该植物。',
-    layout_loaded_title: '布局已加载',
-    layout_loaded_description: '您保存的农场布局已加载。',
-    error_loading_layout_title: '加载布局时出错',
-    error_loading_layout_description: '无法加载您保存的布局。正在使用默认网格。',
     layout_saved_title: '布局已保存',
     layout_saved_description: '您的农场布局已保存在此浏览器中。',
     error_saving_layout_title: '保存布局时出错',
@@ -564,6 +636,35 @@ export const translations: Record<Locale, Record<string, string>> = {
     error_reading_file_description: '无法处理该图片。请重试。',
     invalid_file_type_title: '无效的文件类型',
     invalid_file_type_description_image: '请选择一个图片文件。',
+
+    // Yield Tracker Page
+    yield_tracker_title: '产量追踪',
+    yield_tracker_description: '记录和管理您的作物产量。',
+    add_yield_entry_button: '添加产量记录',
+    add_or_edit_yield_entry_dialog_title: '添加/编辑产量记录',
+    add_or_edit_yield_entry_dialog_description: '记录您农场的新收获或更新现有记录。',
+    crop_name_label: '作物名称',
+    crop_name_placeholder: '例如，传家宝番茄',
+    yield_amount_label: '产量（公斤）',
+    yield_amount_placeholder: '例如，50',
+    harvest_date_label: '收获日期',
+    notes_label: '备注',
+    notes_optional: '（可选）',
+    notes_placeholder: '关于这次收获的任何细节...',
+    add_entry_button: '添加记录',
+    update_entry_button: '更新记录',
+    yield_log_title: '产量日志',
+    no_yield_data_title: '尚无产量数据',
+    no_yield_data_description: '从添加您的第一条产量记录开始。',
+    table_header_crop: '作物',
+    table_header_yield: '产量（公斤）',
+    table_header_date: '日期',
+    table_header_actions: '操作',
+    delete_entry_confirmation_title: '你确定吗？',
+    delete_entry_confirmation_description: '这将永久删除“{cropName}”的产量记录。此操作无法撤销。',
+    pick_a_date: "选择一个日期",
+
+    // Discussion Page
     discussion_title: '社区讨论',
     discussion_description: '提出问题、分享技巧并与其他用户联系。',
     create_post_form_title: '创建新帖子',
@@ -584,6 +685,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     welcome_reply_content: '很高兴来到这里！我很高兴能向大家学习。',
     tomato_post_title: '处理番茄早疫病的最佳方法是什么？',
     tomato_post_content: '我注意到我的一些番茄植株出现了早疫病的迹象。你们最好的有机治疗方法是什么？',
+    
+    // Settings Page
     settings_title: '设置',
     settings_description: '管理您的账户和应用程序首选项。',
     profile_picture_title: '个人资料图片',
@@ -594,6 +697,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     appearance_description: '自定义应用程序的外观和感觉。',
     theme_label: '主题',
     theme_description: '选择浅色或深色主题。',
+    // Toasts
     upload_success_title: '成功',
     upload_success_description: '您的个人资料图片已更新。',
     upload_failed_title: '上传失败',
