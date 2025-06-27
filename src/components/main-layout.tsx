@@ -39,7 +39,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLanguage } from "@/context/language-context";
-import { Logo } from "@/components/logo";
 
 
 function Nav() {
@@ -139,7 +138,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Logo className="h-6 w-6" />
             <h1 className="text-xl font-headline font-semibold">Domnam</h1>
           </div>
         </SidebarHeader>
