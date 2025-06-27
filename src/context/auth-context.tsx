@@ -9,10 +9,12 @@ import { useRouter } from 'next/navigation';
 
 interface User {
   username: string;
+  profilePicture?: string;
 }
 
 interface StoredUser extends User {
   password_hash: string; // In a real app, this would be a proper hash.
+  profilePicture: string;
 }
 
 interface AuthContextType {
@@ -21,6 +23,7 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   signup: (username: string, password: string) => Promise<void>;
   logout: () => void;
+  updateProfilePicture: (pictureDataUrl: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -47,6 +50,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const updateProfilePicture = async (pictureDataUrl: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        if (!user) {
+            return reject(new Error("No user is logged in."));
+        }
+
+        const updatedUser = { ...user, profilePicture: pictureDataUrl };
+        setUser(updatedUser);
+        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(updatedUser));
+        
+        const storedUsersRaw = localStorage.getItem(USERS_STORAGE_KEY);
+        let users: StoredUser[] = storedUsersRaw ? JSON.parse(storedUsersRaw) : [];
+        
+        users = users.map(u => 
+            u.username.toLowerCase() === user.username.toLowerCase() 
+            ? { ...u, profilePicture: pictureDataUrl } 
+            : u
+        );
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+
+        resolve();
+    });
+  };
+
   const signup = async (username: string, password: string): Promise<void> => {
     return new Promise((resolve, reject) => {
         const storedUsersRaw = localStorage.getItem(USERS_STORAGE_KEY);
@@ -57,12 +84,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         // In a real app, you'd hash the password securely.
-        const newUser: StoredUser = { username, password_hash: password };
+        const newUser: StoredUser = { username, password_hash: password, profilePicture: "" };
         users.push(newUser);
         localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
 
         // Automatically log in after signup
-        const sessionUser = { username };
+        const sessionUser: User = { username, profilePicture: "" };
         localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionUser));
         setUser(sessionUser);
         resolve();
@@ -80,7 +107,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             return reject(new Error("Invalid username or password."));
         }
 
-        const sessionUser = { username: foundUser.username };
+        const sessionUser: User = { username: foundUser.username, profilePicture: foundUser.profilePicture };
         localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessionUser));
         setUser(sessionUser);
         resolve();
@@ -94,7 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, signup }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, signup, updateProfilePicture }}>
       {children}
     </AuthContext.Provider>
   );

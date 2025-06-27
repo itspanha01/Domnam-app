@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ProfilePictureCard } from "@/components/settings/profile-picture-card";
 
 export default function SettingsPage() {
     return (
@@ -11,10 +12,12 @@ export default function SettingsPage() {
             <div>
                 <h1 className="text-3xl font-headline font-bold">Settings</h1>
                 <p className="text-muted-foreground">
-                    Manage your application preferences.
+                    Manage your account and application preferences.
                 </p>
             </div>
             <Separator />
+            
+            <ProfilePictureCard />
             
             <Card className="max-w-2xl">
                 <CardHeader>
