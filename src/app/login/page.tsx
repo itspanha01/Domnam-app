@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Sprout } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useLanguage } from '@/context/language-context';
 
 export default function LoginPage() {
   const [mode, setMode] = useState<'login' | 'signup'>('login');
@@ -19,6 +20,7 @@ export default function LoginPage() {
 
   const { login, signup } = useAuth();
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,21 +28,31 @@ export default function LoginPage() {
 
     if (mode === 'signup') {
       if (password !== confirmPassword) {
-        setError("Passwords do not match.");
+        setError(t('error_passwords_mismatch'));
         return;
       }
       try {
         await signup(username, password);
         router.push('/');
       } catch (err: any) {
-        setError(err.message);
+        // Use translation for known errors
+        if (err.message === "Username already exists.") {
+            setError(t('error_username_exists'));
+        } else {
+            setError(err.message);
+        }
       }
     } else {
       try {
         await login(username, password);
         router.push('/');
       } catch (err: any) {
-        setError(err.message);
+         // Use translation for known errors
+        if (err.message === "Invalid username or password.") {
+            setError(t('error_invalid_credentials'));
+        } else {
+            setError(err.message);
+        }
       }
     }
   };
@@ -64,10 +76,10 @@ export default function LoginPage() {
                 <h1 className="text-3xl font-headline font-bold">Domnam</h1>
               </div>
               <CardTitle className="text-2xl font-headline">
-                {mode === 'login' ? 'Welcome Back!' : 'Create an Account'}
+                {t(mode === 'login' ? 'login_welcome' : 'login_create_account')}
               </CardTitle>
               <CardDescription>
-                {mode === 'login' ? 'Enter your credentials to manage your farm.' : 'Sign up to get started.'}
+                {t(mode === 'login' ? 'login_description' : 'signup_description')}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -77,18 +89,18 @@ export default function LoginPage() {
                 </Alert>
               )}
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">{t('username_label')}</Label>
                 <Input
                   id="username"
                   type="text"
-                  placeholder="e.g. FarmManager"
+                  placeholder={t('username_placeholder')}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('password_label')}</Label>
                 <Input
                   id="password"
                   type="password"
@@ -100,7 +112,7 @@ export default function LoginPage() {
               </div>
               {mode === 'signup' && (
                 <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <Label htmlFor="confirm-password">{t('confirm_password_label')}</Label>
                   <Input
                     id="confirm-password"
                     type="password"
@@ -114,10 +126,10 @@ export default function LoginPage() {
             </CardContent>
             <CardFooter className="flex-col gap-4">
               <Button type="submit" className="w-full">
-                {mode === 'login' ? 'Login' : 'Sign Up'}
+                {t(mode === 'login' ? 'login_button' : 'signup_button')}
               </Button>
               <Button type="button" variant="link" onClick={toggleMode}>
-                {mode === 'login' ? "Don't have an account? Sign up" : 'Already have an account? Login'}
+                {t(mode === 'login' ? 'login_toggle' : 'signup_toggle')}
               </Button>
             </CardFooter>
           </Card>

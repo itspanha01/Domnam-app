@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Leaf } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 const getRandomValue = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -13,6 +14,7 @@ export function PlantHealthCard() {
   const [overallHealth, setOverallHealth] = useState(85);
   const [soilMoisture, setSoilMoisture] = useState(75);
   const [nutrientLevel, setNutrientLevel] = useState(90);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,10 +27,10 @@ export function PlantHealthCard() {
   }, []);
 
   const getHealthStatusText = (health: number) => {
-    if (health > 90) return "Excellent";
-    if (health > 75) return "Overall Healthy";
-    if (health > 50) return "Needs Attention";
-    return "Critical";
+    if (health > 90) return t('health_excellent');
+    if (health > 75) return t('health_overall_healthy');
+    if (health > 50) return t('health_needs_attention');
+    return t('health_critical');
   }
 
   return (
@@ -36,7 +38,7 @@ export function PlantHealthCard() {
       <CardHeader>
         <CardTitle className="font-headline text-xl flex items-center gap-2">
           <Leaf className="w-6 h-6 text-primary" />
-          Plant Health
+          {t('plant_health_card_title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -50,14 +52,14 @@ export function PlantHealthCard() {
         <div className="space-y-3 text-sm">
           <div>
             <div className="flex justify-between mb-1">
-              <p>Soil Moisture</p>
+              <p>{t('soil_moisture')}</p>
               <p>{soilMoisture}%</p>
             </div>
             <Progress value={soilMoisture} />
           </div>
           <div>
             <div className="flex justify-between mb-1">
-              <p>Nutrient Level</p>
+              <p>{t('nutrient_level')}</p>
               <p>{nutrientLevel}%</p>
             </div>
             <Progress value={nutrientLevel} />

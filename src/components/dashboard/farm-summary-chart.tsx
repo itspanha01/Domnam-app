@@ -2,7 +2,8 @@
 
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
+import { useLanguage } from "@/context/language-context";
 
 const chartData = [
   { crop: "Tomato", yield: 4000 },
@@ -13,19 +14,21 @@ const chartData = [
   { crop: "Pepper", yield: 2390 },
 ];
 
-const chartConfig = {
-  yield: {
-    label: "Yield (kg)",
-    color: "hsl(var(--primary))",
-  },
-};
-
 export function FarmSummaryChart() {
+  const { t } = useLanguage();
+
+  const chartConfig = {
+    yield: {
+      label: t('yield_label'),
+      color: "hsl(var(--primary))",
+    },
+  } satisfies ChartConfig;
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">Yield Summary</CardTitle>
-        <CardDescription>Last month's crop yield</CardDescription>
+        <CardTitle className="font-headline">{t('yield_summary_title')}</CardTitle>
+        <CardDescription>{t('yield_summary_description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[300px] w-full">

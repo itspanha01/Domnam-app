@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, PlusCircle } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 interface NewPostFormProps {
   onPostCreate: (title: string, content: string) => void;
@@ -21,6 +21,7 @@ const formSchema = z.object({
 });
 
 export function NewPostForm({ onPostCreate }: NewPostFormProps) {
+  const { t } = useLanguage();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,8 +42,8 @@ export function NewPostForm({ onPostCreate }: NewPostFormProps) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
-            <CardTitle>Create a New Post</CardTitle>
-            <CardDescription>Start a new topic of discussion.</CardDescription>
+            <CardTitle>{t('create_post_form_title')}</CardTitle>
+            <CardDescription>{t('create_post_form_description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -50,9 +51,9 @@ export function NewPostForm({ onPostCreate }: NewPostFormProps) {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>{t('post_title_label')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="What's your question or topic?" {...field} />
+                    <Input placeholder={t('post_title_placeholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -63,10 +64,10 @@ export function NewPostForm({ onPostCreate }: NewPostFormProps) {
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content</FormLabel>
+                  <FormLabel>{t('post_content_label')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Provide more details here..."
+                      placeholder={t('post_content_placeholder')}
                       className="min-h-[120px]"
                       {...field}
                     />
@@ -83,7 +84,7 @@ export function NewPostForm({ onPostCreate }: NewPostFormProps) {
               ) : (
                 <PlusCircle className="mr-2 h-4 w-4" />
               )}
-              Create Post
+              {t('create_post_button')}
             </Button>
           </CardFooter>
         </form>

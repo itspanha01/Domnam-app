@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -15,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Separator } from "../ui/separator";
 import { MessageSquare, CornerDownRight, Send } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { useLanguage } from "@/context/language-context";
 
 interface Author {
   username: string;
@@ -51,6 +51,7 @@ const getInitials = (name: string) => {
 }
 
 function ReplyCard({ reply }: { reply: Reply }) {
+    const { t } = useLanguage();
     return (
         <div className="flex gap-3">
              <Avatar className="h-8 w-8">
@@ -72,6 +73,7 @@ function ReplyCard({ reply }: { reply: Reply }) {
 
 export function PostCard({ post, onReply }: PostCardProps) {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const form = useForm<z.infer<typeof replySchema>>({
     resolver: zodResolver(replySchema),
     defaultValues: {
@@ -84,6 +86,10 @@ export function PostCard({ post, onReply }: PostCardProps) {
     form.reset();
   }
 
+  const replyText = post.replies.length === 1 
+    ? t('reply_count', { count: post.replies.length.toString() })
+    : t('replies_count', { count: post.replies.length.toString() });
+
   return (
     <Card>
       <CardHeader className="pb-4">
@@ -95,7 +101,7 @@ export function PostCard({ post, onReply }: PostCardProps) {
           <div className="flex-1">
             <h2 className="text-xl font-bold font-headline">{post.title}</h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <p>Posted by <span className="font-medium text-foreground">{post.author.username}</span></p>
+              <p>{t('post_by')} <span className="font-medium text-foreground">{post.author.username}</span></p>
               <span>&middot;</span>
               <p>{formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}</p>
             </div>
@@ -110,7 +116,7 @@ export function PostCard({ post, onReply }: PostCardProps) {
             {post.replies.length > 0 && <Separator />}
             <div className="flex items-center text-sm font-medium text-muted-foreground gap-2">
                 <MessageSquare className="h-4 w-4" />
-                <span>{post.replies.length} {post.replies.length === 1 ? "Reply" : "Replies"}</span>
+                <span>{replyText}</span>
             </div>
             {post.replies.length > 0 && (
                 <div className="pl-6 border-l-2 ml-4 space-y-4">
@@ -137,7 +143,7 @@ export function PostCard({ post, onReply }: PostCardProps) {
                             <FormItem>
                                 <FormControl>
                                     <Textarea
-                                        placeholder="Write a reply..."
+                                        placeholder={t('write_reply_placeholder')}
                                         className="min-h-[20px]"
                                         {...field}
                                     />

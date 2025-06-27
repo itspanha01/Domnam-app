@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -22,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import type { Plant } from "@/app/plant-catalog/page";
+import { useLanguage } from "@/context/language-context";
 
 type NewPlant = Omit<Plant, "id">;
 
@@ -41,6 +41,7 @@ const formSchema = z.object({
 
 export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDialogProps) {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -68,8 +69,8 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
       if (!file.type.startsWith("image/")) {
         toast({
           variant: "destructive",
-          title: "Invalid File Type",
-          description: "Please select an image file.",
+          title: t('invalid_file_type_title'),
+          description: t('invalid_file_type_description_image'),
         });
         form.resetField("image");
         setImagePreview(null);
@@ -104,8 +105,8 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
       reader.onerror = () => {
         toast({
           variant: "destructive",
-          title: "Error Reading File",
-          description: "Could not process the image. Please try again.",
+          title: t('error_reading_file_title'),
+          description: t('error_reading_file_description'),
         });
         setIsSubmitting(false);
       };
@@ -119,8 +120,8 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
     <Dialog open={isOpen} onOpenChange={handleDialogStateChange}>
       <DialogContent className="sm:max-w-[480px]">
         <DialogHeader>
-          <DialogTitle>Add a New Plant</DialogTitle>
-          <DialogDescription>Fill in the details for your new plant to add it to the catalog.</DialogDescription>
+          <DialogTitle>{t('add_plant_dialog_title')}</DialogTitle>
+          <DialogDescription>{t('add_plant_dialog_description')}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -129,7 +130,7 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Image <span className="text-muted-foreground">(Optional)</span></FormLabel>
+                  <FormLabel>{t('plant_image_label')} <span className="text-muted-foreground">{t('plant_image_optional')}</span></FormLabel>
                   <FormControl>
                     <div className="w-full">
                       <div className="aspect-video relative bg-muted/50 rounded-md flex items-center justify-center border-2 border-dashed">
@@ -138,7 +139,7 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
                         ) : (
                           <div className="text-center text-muted-foreground p-4">
                             <ImageIcon className="mx-auto h-12 w-12" />
-                            <p className="mt-2 text-sm">Upload an image</p>
+                            <p className="mt-2 text-sm">{t('upload_an_image')}</p>
                           </div>
                         )}
                       </div>
@@ -159,9 +160,9 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Name</FormLabel>
+                  <FormLabel>{t('plant_name_label')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g. Cherry Tomato" {...field} />
+                    <Input placeholder={t('plant_name_placeholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,17 +173,17 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Type <span className="text-muted-foreground">(Optional)</span></FormLabel>
+                  <FormLabel>{t('plant_type_label')} <span className="text-muted-foreground">{t('plant_type_optional')}</span></FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select a type" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('select_a_type')} /></SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Vegetable">Vegetable</SelectItem>
-                      <SelectItem value="Fruit">Fruit</SelectItem>
-                      <SelectItem value="Herb">Herb</SelectItem>
-                      <SelectItem value="Flower">Flower</SelectItem>
-                      <SelectItem value="Other">Other</SelectItem>
+                      <SelectItem value="Vegetable">{t('vegetable')}</SelectItem>
+                      <SelectItem value="Fruit">{t('fruit')}</SelectItem>
+                      <SelectItem value="Herb">{t('herb')}</SelectItem>
+                      <SelectItem value="Flower">{t('flower')}</SelectItem>
+                      <SelectItem value="Other">{t('other')}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -194,9 +195,9 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description <span className="text-muted-foreground">(Optional)</span></FormLabel>
+                  <FormLabel>{t('plant_description_label')} <span className="text-muted-foreground">{t('plant_description_optional')}</span></FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Describe the plant's characteristics and care needs." {...field} />
+                    <Textarea placeholder={t('plant_description_placeholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -207,19 +208,19 @@ export function AddPlantDialog({ isOpen, onOpenChange, onPlantAdd }: AddPlantDia
               name="aiHint"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>AI Image Hint <span className="text-muted-foreground">(Optional)</span></FormLabel>
+                  <FormLabel>{t('ai_hint_label')} <span className="text-muted-foreground">{t('ai_hint_optional')}</span></FormLabel>
                    <FormControl>
-                    <Input placeholder="e.g. 'tomato plant' or 'basil pot'" {...field} />
+                    <Input placeholder={t('ai_hint_placeholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => handleDialogStateChange(false)}>Cancel</Button>
+              <Button type="button" variant="outline" onClick={() => handleDialogStateChange(false)}>{t('cancel_button')}</Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Add Plant
+                {t('add_plant_button')}
               </Button>
             </DialogFooter>
           </form>

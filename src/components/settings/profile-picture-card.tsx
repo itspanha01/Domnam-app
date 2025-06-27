@@ -7,12 +7,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { User, Camera, Loader2 } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 export function ProfilePictureCard() {
     const { user, updateProfilePicture } = useAuth();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState(false);
     const { toast } = useToast();
+    const { t } = useLanguage();
 
     const handleUploadClick = () => {
         fileInputRef.current?.click();
@@ -25,8 +27,8 @@ export function ProfilePictureCard() {
         if (!file.type.startsWith("image/")) {
             toast({
                 variant: "destructive",
-                title: "Invalid File Type",
-                description: "Please select an image file (e.g., PNG, JPG).",
+                title: t('invalid_file_type_title'),
+                description: t('invalid_file_type_description_image_ext'),
             });
             return;
         }
@@ -38,14 +40,14 @@ export function ProfilePictureCard() {
             try {
                 await updateProfilePicture(dataUrl);
                 toast({
-                    title: "Success",
-                    description: "Your profile picture has been updated.",
+                    title: t('upload_success_title'),
+                    description: t('upload_success_description'),
                 });
             } catch (error: any) {
                 toast({
                     variant: "destructive",
-                    title: "Upload Failed",
-                    description: error.message || "Could not update profile picture. Please try again.",
+                    title: t('upload_failed_title'),
+                    description: error.message || t('upload_failed_description'),
                 });
             } finally {
                 setIsLoading(false);
@@ -57,8 +59,8 @@ export function ProfilePictureCard() {
     return (
         <Card className="max-w-2xl">
             <CardHeader>
-                <CardTitle>Profile Picture</CardTitle>
-                <CardDescription>Update your profile photo.</CardDescription>
+                <CardTitle>{t('profile_picture_title')}</CardTitle>
+                <CardDescription>{t('profile_picture_description')}</CardDescription>
             </CardHeader>
             <CardContent className="flex items-center gap-6">
                 <Avatar className="h-20 w-20">
@@ -74,10 +76,10 @@ export function ProfilePictureCard() {
                         ) : (
                             <Camera className="mr-2 h-4 w-4" />
                         )}
-                        Upload New Photo
+                        {t('upload_new_photo_button')}
                     </Button>
                     <p className="text-sm text-muted-foreground">
-                        Recommended size: 256x256px.
+                        {t('upload_recommended_size')}
                     </p>
                 </div>
                 <input

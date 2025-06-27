@@ -14,6 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/context/language-context";
 
 interface Plant {
   name: string;
@@ -34,6 +35,7 @@ const colorOptions = [
 export function FarmGrid() {
   const [rows, setRows] = useState(8);
   const [cols, setCols] = useState(12);
+  const { t } = useLanguage();
 
   // Undo/Redo state
   const [history, setHistory] = useState<(Plant | null)[][][]>([
@@ -170,7 +172,7 @@ export function FarmGrid() {
                               {cell.description}
                             </p>
                             <div className="flex items-center pt-1">
-                              <span className="text-xs text-muted-foreground">Type: {cell.type}</span>
+                              <span className="text-xs text-muted-foreground">{t('plant_type_label')}: {cell.type}</span>
                             </div>
                           </div>
                         </TooltipContent>
@@ -185,19 +187,19 @@ export function FarmGrid() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle className="font-headline">Layout Controls</CardTitle>
+              <CardTitle className="font-headline">{t('layout_controls_title')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                   <div className="space-y-2">
-                      <Label>Editor Mode</Label>
+                      <Label>{t('editor_mode_label')}</Label>
                       <RadioGroup value={mode} onValueChange={(v) => setMode(v as 'add'|'remove')} className="grid grid-cols-2 gap-2">
                           <Label htmlFor="mode-add" className={cn("flex items-center justify-center gap-2 p-3 border rounded-md cursor-pointer transition-colors", mode === 'add' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-accent/50')}>
-                              <Sprout className="h-4 w-4" /> Add
+                              <Sprout className="h-4 w-4" /> {t('add_mode')}
                               <RadioGroupItem value="add" id="mode-add" className="sr-only" />
                           </Label>
                           <Label htmlFor="mode-remove" className={cn("flex items-center justify-center gap-2 p-3 border rounded-md cursor-pointer transition-colors", mode === 'remove' ? 'bg-destructive text-destructive-foreground border-destructive' : 'hover:bg-accent/50')}>
-                              <Trash2 className="h-4 w-4" /> Remove
+                              <Trash2 className="h-4 w-4" /> {t('remove_mode')}
                               <RadioGroupItem value="remove" id="mode-remove" className="sr-only" />
                           </Label>
                       </RadioGroup>
@@ -205,11 +207,11 @@ export function FarmGrid() {
                   <div className="flex items-center gap-2">
                       <Button variant="outline" onClick={handleUndo} disabled={historyIndex === 0} className="w-full">
                           <Undo className="mr-2 h-4 w-4" />
-                          Undo
+                          {t('undo_button')}
                       </Button>
                       <Button variant="outline" onClick={handleRedo} disabled={historyIndex >= history.length - 1} className="w-full">
                           <Redo className="mr-2 h-4 w-4" />
-                          Redo
+                          {t('redo_button')}
                       </Button>
                   </div>
               </div>
@@ -217,28 +219,28 @@ export function FarmGrid() {
               <Separator />
 
               <div className={cn("space-y-4 transition-opacity", mode === 'remove' && 'opacity-50 pointer-events-none')}>
-                <h3 className="font-semibold text-lg px-1">Current Plant</h3>
+                <h3 className="font-semibold text-lg px-1">{t('current_plant_heading')}</h3>
                 <div className="space-y-4 p-4 border rounded-lg bg-card">
                   <div>
-                    <Label htmlFor="plant-name">Plant Name</Label>
-                    <Input id="plant-name" value={plantName} onChange={(e) => setPlantName(e.target.value)} placeholder="e.g., Cherry Tomato" />
+                    <Label htmlFor="plant-name">{t('plant_name_label')}</Label>
+                    <Input id="plant-name" value={plantName} onChange={(e) => setPlantName(e.target.value)} placeholder={t('plant_name_placeholder')} />
                   </div>
                   <div>
-                    <Label htmlFor="plant-type">Plant Type</Label>
+                    <Label htmlFor="plant-type">{t('plant_type_label')}</Label>
                     <Select value={plantType} onValueChange={setPlantType}>
                       <SelectTrigger id="plant-type">
-                        <SelectValue placeholder="Select a type" />
+                        <SelectValue placeholder={t('select_a_type')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Vegetable">Vegetable</SelectItem>
-                        <SelectItem value="Fruit">Fruit</SelectItem>
-                        <SelectItem value="Herb">Herb</SelectItem>
-                        <SelectItem value="Flower">Flower</SelectItem>
+                        <SelectItem value="Vegetable">{t('vegetable')}</SelectItem>
+                        <SelectItem value="Fruit">{t('fruit')}</SelectItem>
+                        <SelectItem value="Herb">{t('herb')}</SelectItem>
+                        <SelectItem value="Flower">{t('flower')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
-                    <Label>Plant Color</Label>
+                    <Label>{t('plant_color_label')}</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
                       {colorOptions.map((color) => (
                         <button
@@ -256,8 +258,8 @@ export function FarmGrid() {
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="plant-description">Description</Label>
-                    <Textarea id="plant-description" value={plantDescription} onChange={(e) => setPlantDescription(e.target.value)} placeholder="Describe the plant..." />
+                    <Label htmlFor="plant-description">{t('plant_description_label')}</Label>
+                    <Textarea id="plant-description" value={plantDescription} onChange={(e) => setPlantDescription(e.target.value)} placeholder={t('describe_plant_placeholder')} />
                   </div>
                 </div>
               </div>
@@ -266,7 +268,7 @@ export function FarmGrid() {
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="rows-slider">Rows: {rows}</Label>
+                  <Label htmlFor="rows-slider">{t('rows_label', {rows: rows.toString()})}</Label>
                   <Slider
                     id="rows-slider"
                     min={4}
@@ -277,7 +279,7 @@ export function FarmGrid() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="cols-slider">Columns: {cols}</Label>
+                  <Label htmlFor="cols-slider">{t('cols_label', {cols: cols.toString()})}</Label>
                   <Slider
                     id="cols-slider"
                     min={4}
@@ -291,7 +293,7 @@ export function FarmGrid() {
 
               <div className="text-sm text-muted-foreground pt-4 border-t">
                 <Tractor className="inline-block mr-2 w-4 h-4" />
-                Total plots: {rows * cols}. Planted: {grid.flat().filter(c => c !== null).length}
+                {t('total_plots', {count: (rows * cols).toString()})} {t('plots_planted', {count: grid.flat().filter(c => c !== null).length.toString()})}
               </div>
             </CardContent>
           </Card>
@@ -300,14 +302,14 @@ export function FarmGrid() {
         <AlertDialog open={!!cellToDelete} onOpenChange={(open) => !open && setCellToDelete(null)}>
           <AlertDialogContent>
               <AlertDialogHeader>
-                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                  <AlertDialogTitle>{t('delete_plot_confirmation_title')}</AlertDialogTitle>
                   <AlertDialogDescription>
-                      This action cannot be undone. This will permanently remove the plant from this plot.
+                      {t('delete_plot_confirmation_description')}
                   </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                  <AlertDialogCancel>{t('cancel_button')}</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleConfirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t('delete_button')}</AlertDialogAction>
               </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

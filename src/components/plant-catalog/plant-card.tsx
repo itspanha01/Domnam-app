@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -8,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Upload, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/context/language-context";
 
 interface PlantCardProps {
   id: string;
@@ -23,6 +23,7 @@ interface PlantCardProps {
 export function PlantCard({ id, name, image, aiHint, description, type, onImageChange, onDeleteRequest }: PlantCardProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
@@ -34,8 +35,8 @@ export function PlantCard({ id, name, image, aiHint, description, type, onImageC
       if (!file.type.startsWith("image/")) {
         toast({
             variant: "destructive",
-            title: "Invalid File Type",
-            description: "Please select an image file.",
+            title: t('invalid_file_type_title'),
+            description: t('invalid_file_type_description_image'),
         });
         return;
       }
@@ -50,8 +51,8 @@ export function PlantCard({ id, name, image, aiHint, description, type, onImageC
       reader.onerror = () => {
         toast({
             variant: "destructive",
-            title: "Error Reading File",
-            description: "Could not read the selected file. Please try again.",
+            title: t('error_reading_file_title'),
+            description: t('error_reading_file_description'),
         });
       };
       reader.readAsDataURL(file);
@@ -73,11 +74,11 @@ export function PlantCard({ id, name, image, aiHint, description, type, onImageC
       <CardFooter className="grid grid-cols-2 gap-2">
         <Button variant="outline" size="sm" className="w-full" onClick={handleButtonClick}>
           <Upload className="mr-2 h-4 w-4" />
-          Change Image
+          {t('plant_card_change_image')}
         </Button>
         <Button variant="destructive" size="sm" className="w-full" onClick={() => onDeleteRequest(id)}>
             <Trash2 className="mr-2 h-4 w-4" />
-            Delete
+            {t('plant_card_delete')}
         </Button>
         <input
           type="file"

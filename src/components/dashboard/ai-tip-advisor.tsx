@@ -13,6 +13,7 @@ import { Slider } from "@/components/ui/slider"
 import { useState } from "react"
 import { Wand2, Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { useLanguage } from "@/context/language-context"
 
 const formSchema = z.object({
   weatherConditions: z.string().min(1, "Please select weather conditions."),
@@ -26,6 +27,7 @@ export function AiTipAdvisor() {
   const [isLoading, setIsLoading] = useState(false)
   const [tip, setTip] = useState("")
   const { toast } = useToast()
+  const { t } = useLanguage()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,8 +50,8 @@ export function AiTipAdvisor() {
       console.error(error)
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Couldn't generate a tip right now. Please try again later.",
+        title: t('error_generating_tip_title'),
+        description: t('error_generating_tip_description'),
       })
     } finally {
       setIsLoading(false)
@@ -61,9 +63,9 @@ export function AiTipAdvisor() {
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
           <Wand2 className="text-primary" />
-          AI Tip Advisor
+          {t('ai_advisor_title')}
         </CardTitle>
-        <CardDescription>Get AI-powered tips for your crops based on current conditions.</CardDescription>
+        <CardDescription>{t('ai_advisor_description')}</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -73,9 +75,9 @@ export function AiTipAdvisor() {
               name="plantType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Type</FormLabel>
+                  <FormLabel>{t('plant_type_label')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Tomato, Rose" {...field} />
+                    <Input placeholder={t('plant_type_placeholder')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -86,16 +88,16 @@ export function AiTipAdvisor() {
               name="weatherConditions"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Weather</FormLabel>
+                  <FormLabel>{t('weather_label')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select weather" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('select_weather')} /></SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="sunny">Sunny</SelectItem>
-                      <SelectItem value="rainy">Rainy</SelectItem>
-                      <SelectItem value="cloudy">Cloudy</SelectItem>
-                      <SelectItem value="windy">Windy</SelectItem>
+                      <SelectItem value="sunny">{t('weather_sunny')}</SelectItem>
+                      <SelectItem value="rainy">{t('weather_rainy')}</SelectItem>
+                      <SelectItem value="cloudy">{t('weather_cloudy')}</SelectItem>
+                      <SelectItem value="windy">{t('weather_windy')}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -107,16 +109,16 @@ export function AiTipAdvisor() {
               name="plantHealth"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Plant Health</FormLabel>
+                  <FormLabel>{t('plant_health_label')}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select health status" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('select_health')} /></SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="healthy">Healthy</SelectItem>
-                      <SelectItem value="wilting">Wilting</SelectItem>
-                      <SelectItem value="diseased">Diseased</SelectItem>
-                      <SelectItem value="pests">Pest-infested</SelectItem>
+                      <SelectItem value="healthy">{t('health_healthy_option')}</SelectItem>
+                      <SelectItem value="wilting">{t('health_wilting')}</SelectItem>
+                      <SelectItem value="diseased">{t('health_diseased')}</SelectItem>
+                      <SelectItem value="pests">{t('health_pests')}</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -128,7 +130,7 @@ export function AiTipAdvisor() {
               name="temperature"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Temperature: {field.value}°C</FormLabel>
+                  <FormLabel>{t('temperature_label', {temp: field.value.toString()})}</FormLabel>
                   <FormControl>
                     <Slider
                       min={-10}
@@ -146,7 +148,7 @@ export function AiTipAdvisor() {
               name="humidity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Humidity: {field.value}%</FormLabel>
+                  <FormLabel>{t('humidity_label', {humidity: field.value.toString()})}</FormLabel>
                   <FormControl>
                     <Slider
                       min={0}
@@ -165,10 +167,10 @@ export function AiTipAdvisor() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
+                  {t('generating_button')}
                 </>
               ) : (
-                "Get Care Tip"
+                t('get_care_tip_button')
               )}
             </Button>
             {tip && (

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -6,50 +5,52 @@ import { useAuth } from '@/context/auth-context';
 import { NewPostForm } from '@/components/discussion/new-post-form';
 import { PostCard, type Post } from '@/components/discussion/post-card';
 import { Separator } from '@/components/ui/separator';
+import { useLanguage } from '@/context/language-context';
 
 const DISCUSSION_STORAGE_KEY = 'domnam-discussion-posts';
-
-const initialPosts: Post[] = [
-  {
-    id: 'demo-post-1',
-    author: {
-      username: 'Admin',
-      profilePicture: '',
-    },
-    title: 'Welcome to the Domnam Community!',
-    content: 'This is the discussion board for all things related to smart farming. Feel free to ask questions, share your tips, or show off your farm layouts!',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
-    replies: [
-      {
-        id: 'demo-reply-1',
-        author: {
-          username: 'FarmManager',
-          profilePicture: '',
-        },
-        content: "Great to be here! I'm excited to learn from everyone.",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
-      },
-    ],
-  },
-  {
-    id: 'demo-post-2',
-    author: {
-      username: 'TomatoKing',
-      profilePicture: '',
-    },
-    title: 'Best way to deal with tomato blight?',
-    content: "I've noticed some of my tomato plants are showing signs of early blight. What are your best organic treatment methods?",
-    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
-    replies: [],
-  },
-];
 
 export default function DiscussionPage() {
   const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isMounted, setIsMounted] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
+    const initialPosts: Post[] = [
+      {
+        id: 'demo-post-1',
+        author: {
+          username: 'Admin',
+          profilePicture: '',
+        },
+        title: t('welcome_post_title'),
+        content: t('welcome_post_content'),
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+        replies: [
+          {
+            id: 'demo-reply-1',
+            author: {
+              username: 'FarmManager',
+              profilePicture: '',
+            },
+            content: t('welcome_reply_content'),
+            timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
+          },
+        ],
+      },
+      {
+        id: 'demo-post-2',
+        author: {
+          username: 'TomatoKing',
+          profilePicture: '',
+        },
+        title: t('tomato_post_title'),
+        content: t('tomato_post_content'),
+        timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
+        replies: [],
+      },
+    ];
+
     try {
       const storedPosts = localStorage.getItem(DISCUSSION_STORAGE_KEY);
       if (storedPosts) {
@@ -62,7 +63,7 @@ export default function DiscussionPage() {
       setPosts(initialPosts);
     }
     setIsMounted(true);
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (isMounted) {
@@ -117,9 +118,9 @@ export default function DiscussionPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-headline font-bold">Community Discussion</h1>
+        <h1 className="text-3xl font-headline font-bold">{t('discussion_title')}</h1>
         <p className="text-muted-foreground">
-          Ask questions, share tips, and connect with other users.
+          {t('discussion_description')}
         </p>
       </div>
 
@@ -134,8 +135,8 @@ export default function DiscussionPage() {
           ))
         ) : (
           <div className="text-center py-12 text-muted-foreground">
-            <h3 className="text-xl font-semibold">No discussions yet.</h3>
-            <p>Be the first to start a conversation!</p>
+            <h3 className="text-xl font-semibold">{t('no_discussions_title')}</h3>
+            <p>{t('no_discussions_description')}</p>
           </div>
         )}
       </div>

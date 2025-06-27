@@ -1,21 +1,26 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Droplets, Sun, Thermometer, Wind } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 export function WeatherCard() {
+  const { t } = useLanguage();
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="font-headline text-xl flex items-center gap-2">
           <Sun className="w-6 h-6 text-primary" />
-          Current Weather
+          {t('weather_card_title')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex justify-between items-center">
           <span className="text-5xl font-bold font-headline">28°C</span>
           <div className="text-right">
-            <p className="font-semibold">Sunny</p>
-            <p className="text-muted-foreground text-sm">Feels like 30°C</p>
+            <p className="font-semibold">{t('weather_sunny')}</p>
+            <p className="text-muted-foreground text-sm">{t('weather_feels_like', { degrees: '30' })}</p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 text-sm">
