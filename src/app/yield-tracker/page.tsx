@@ -72,6 +72,7 @@ export default function YieldTrackerPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       crop: "",
+      yield: undefined,
       notes: "",
     },
   });
@@ -169,7 +170,7 @@ export default function YieldTrackerPage() {
                 <FormField control={form.control} name="yield" render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('yield_amount_label')}</FormLabel>
-                    <FormControl><Input type="number" placeholder={t('yield_amount_placeholder')} {...field} /></FormControl>
+                    <FormControl><Input type="number" placeholder={t('yield_amount_placeholder')} {...field} value={field.value ?? ""} /></FormControl>
                     <FormMessage />
                   </FormItem>
                 )}/>
