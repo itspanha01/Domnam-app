@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/context/auth-context';
 import { LayoutDecider } from '@/components/layout-decider';
+import { LanguageProvider } from '@/context/language-context';
 
 export const metadata: Metadata = {
   title: 'Domnam - Smart Farm Management',
@@ -26,8 +27,10 @@ export default function RootLayout({
       <body className="font-body antialiased">
         <AuthProvider>
           <ThemeProvider>
-            <LayoutDecider>{children}</LayoutDecider>
-            <Toaster />
+            <LanguageProvider>
+              <LayoutDecider>{children}</LayoutDecider>
+              <Toaster />
+            </LanguageProvider>
           </ThemeProvider>
         </AuthProvider>
       </body>

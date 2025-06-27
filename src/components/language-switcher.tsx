@@ -8,8 +8,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Globe } from "lucide-react"
+import { useLanguage } from "@/context/language-context"
 
 export function LanguageSwitcher() {
+  const { setLocale, t } = useLanguage();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -18,9 +21,9 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>English</DropdownMenuItem>
-        <DropdownMenuItem>ខ្មែរ (Khmer)</DropdownMenuItem>
-        <DropdownMenuItem>中文 (Chinese)</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLocale('en')}>{t('english')}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLocale('km')}>{t('khmer')}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLocale('zh')}>{t('chinese')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

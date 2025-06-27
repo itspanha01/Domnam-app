@@ -37,16 +37,18 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { useLanguage } from "@/context/language-context";
 
 
 function Nav() {
   const pathname = usePathname();
+  const { t } = useLanguage();
 
   const navItems = [
-    { href: "/", label: "Dashboard", icon: Home, tooltip: "Dashboard" },
-    { href: "/farm-layout", label: "Farm Layout", icon: LayoutGrid, tooltip: "Farm Layout" },
-    { href: "/plant-catalog", label: "Plant Catalog", icon: Sprout, tooltip: "Plant Catalog" },
-    { href: "/discussion", label: "Discussion", icon: MessageSquare, tooltip: "Discussion" },
+    { href: "/", label: t('dashboard'), icon: Home, tooltip: t('dashboard') },
+    { href: "/farm-layout", label: t('farm_layout'), icon: LayoutGrid, tooltip: t('farm_layout') },
+    { href: "/plant-catalog", label: t('plant_catalog'), icon: Sprout, tooltip: t('plant_catalog') },
+    { href: "/discussion", label: t('discussion'), icon: MessageSquare, tooltip: t('discussion') },
   ];
 
   return (
@@ -68,6 +70,7 @@ function Nav() {
 export function UserNav() {
   const { user, logout } = useAuth();
   const router = useRouter();
+  const { t } = useLanguage();
 
   if (!user) return null;
   
@@ -90,19 +93,19 @@ export function UserNav() {
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user.username}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              Welcome back!
+              {t('welcome_back_user')}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => router.push('/settings')}>
           <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
+          <span>{t('settings')}</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={logout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Log out</span>
+          <span>{t('logout')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
