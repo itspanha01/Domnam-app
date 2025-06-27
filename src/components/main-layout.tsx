@@ -1,3 +1,4 @@
+
 "use client";
 
 import { type ReactNode, useEffect } from "react";
@@ -24,6 +25,7 @@ import {
   Settings,
   LogOut,
   Loader2,
+  MessageSquare,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import {
@@ -44,6 +46,7 @@ function Nav() {
     { href: "/", label: "Dashboard", icon: Home, tooltip: "Dashboard" },
     { href: "/farm-layout", label: "Farm Layout", icon: LayoutGrid, tooltip: "Farm Layout" },
     { href: "/plant-catalog", label: "Plant Catalog", icon: Sprout, tooltip: "Plant Catalog" },
+    { href: "/discussion", label: "Discussion", icon: MessageSquare, tooltip: "Discussion" },
   ];
 
   return (
