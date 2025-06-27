@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Sprout, Tractor, Undo, Redo, Trash2, Save, Download, Loader2 } from "lucide-react";
+import { Sprout, Tractor, Undo, Redo, Trash2, Save, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
@@ -238,7 +238,20 @@ export function FarmGrid() {
                 <h3 className="font-semibold text-lg px-1">{t('current_plant_heading')}</h3>
                 <div className="space-y-4 p-4 border rounded-lg bg-card">
                   <div><Label htmlFor="plant-name">{t('plant_name_label')}</Label><Input id="plant-name" value={plantName} onChange={(e) => setPlantName(e.target.value)} placeholder={t('plant_name_placeholder')} /></div>
-                  <div><Label htmlFor="plant-type">{t('plant_type_label')}</Label><Select value={plantType} onValueChange={setPlantType}><SelectTrigger id="plant-type"><SelectValue placeholder={t('select_a_type')} /></SelectTrigger><SelectContent><SelectItem value="Vegetable">{t('vegetable')}</SelectItem><SelectItem value="Fruit">{t('fruit')}</SelectItem><SelectItem value="Herb">{t('herb')}</SelectItem><SelectItem value="Flower">{t('flower')}</SelectItem></SelectContent></Select></Select></div>
+                  <div>
+                    <Label htmlFor="plant-type">{t('plant_type_label')}</Label>
+                    <Select value={plantType} onValueChange={setPlantType}>
+                      <SelectTrigger id="plant-type">
+                        <SelectValue placeholder={t('select_a_type')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Vegetable">{t('vegetable')}</SelectItem>
+                        <SelectItem value="Fruit">{t('fruit')}</SelectItem>
+                        <SelectItem value="Herb">{t('herb')}</SelectItem>
+                        <SelectItem value="Flower">{t('flower')}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                   <div>
                     <Label>{t('plant_color_label')}</Label>
                     <div className="flex flex-wrap gap-2 mt-2">
