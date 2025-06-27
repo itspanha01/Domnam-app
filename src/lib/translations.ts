@@ -91,10 +91,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     
     // Farm Layout Page
     farm_layout_title: 'Farm Layout Designer',
-    farm_layout_description_firebase: "Design your farm and save the layout to the cloud. Your last saved layout will be loaded automatically.",
-    farm_layout_description: 'Plan your farm layout by adjusting the grid and clicking on cells to toggle plants.',
+    farm_layout_description: "Design your farm and save the layout to your device. Your last saved layout will be loaded automatically.",
     layout_controls_title: 'Layout Controls',
-    cloud_save_description: 'Your layout is saved securely in the cloud.',
+    cloud_save_description: 'Your layout is saved in this browser.',
     editor_mode_label: 'Editor Mode',
     add_mode: 'Add',
     remove_mode: 'Remove',
@@ -122,11 +121,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     layout_loaded_description: 'Your saved farm layout has been loaded.',
     error_loading_layout_title: 'Error Loading Layout',
     error_loading_layout_description: 'Could not load your saved layout. Using a default grid.',
-    error_firebase_connection: "Could not connect to the database. Please check your Firebase configuration in `src/lib/firebase-config.ts`.",
     layout_saved_title: 'Layout Saved',
-    layout_saved_description: 'Your farm layout has been saved successfully.',
+    layout_saved_description: 'Your farm layout has been saved to this browser.',
     error_saving_layout_title: 'Error Saving Layout',
-    error_saving_layout_description: 'Could not save your layout. Please try again.',
+    error_saving_layout_description: 'Could not save your layout to this browser. Please try again.',
 
 
     // Plant Catalog Page
@@ -303,10 +301,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     
     // Farm Layout Page
     farm_layout_title: 'អ្នករចនាប្លង់កសិដ្ឋាន',
-    farm_layout_description_firebase: "រចនាកសិដ្ឋានរបស់អ្នក ហើយរក្សាទុកប្លង់ទៅក្នុង cloud។ ប្លង់ដែលបានរក្សាទុកចុងក្រោយរបស់អ្នកនឹងត្រូវបានផ្ទុកដោយស្វ័យប្រវត្តិ។",
-    farm_layout_description: 'រៀបចំប្លង់កសិដ្ឋានរបស់អ្នកដោយកែតម្រូវក្រឡាចត្រង្គ ហើយចុចលើក្រឡាដើម្បីបិទបើករុក្ខជាតិ។',
+    farm_layout_description: "រចនាកសិដ្ឋានរបស់អ្នក ហើយរក្សាទុកប្លង់ទៅឧបករណ៍របស់អ្នក។ ប្លង់ដែលបានរក្សាទុកចុងក្រោយរបស់អ្នកនឹងត្រូវបានផ្ទុកដោយស្វ័យប្រវត្តិ។",
     layout_controls_title: 'ឧបករណ៍បញ្ជាប្លង់',
-    cloud_save_description: 'ប្លង់របស់អ្នកត្រូវបានរក្សាទុកដោយសុវត្ថិភាពនៅក្នុង cloud។',
+    cloud_save_description: 'ប្លង់របស់អ្នកត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីរុករកនេះ។',
     editor_mode_label: 'របៀបកែប្រែ',
     add_mode: 'បន្ថែម',
     remove_mode: 'ដកចេញ',
@@ -334,11 +331,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     layout_loaded_description: 'ប្លង់កសិដ្ឋានដែលបានរក្សាទុករបស់អ្នកត្រូវបានផ្ទុក។',
     error_loading_layout_title: 'បញ្ហាក្នុងការផ្ទុកប្លង់',
     error_loading_layout_description: 'មិនអាចផ្ទុកប្លង់ដែលបានរក្សាទុករបស់អ្នកបានទេ។ កំពុងប្រើក្រឡាចត្រង្គលំនាំដើម។',
-    error_firebase_connection: "មិនអាចភ្ជាប់ទៅមូលដ្ឋានទិន្នន័យបានទេ។ សូមពិនិត្យមើលការកំណត់រចនាសម្ព័ន្ធ Firebase របស់អ្នកនៅក្នុង `src/lib/firebase-config.ts`។",
     layout_saved_title: 'ប្លង់ត្រូវបានរក្សាទុក',
-    layout_saved_description: 'ប្លង់កសិដ្ឋានរបស់អ្នកត្រូវបានរក្សាទុកដោយជោគជ័យ។',
+    layout_saved_description: 'ប្លង់កសិដ្ឋានរបស់អ្នកត្រូវបានរក្សាទុកនៅក្នុងកម្មវិធីរុករកនេះ។',
     error_saving_layout_title: 'បញ្ហាក្នុងការរក្សាទុកប្លង់',
-    error_saving_layout_description: 'មិនអាចរក្សាទុកប្លង់របស់អ្នកបានទេ។ សូមព្យាយាមម្តងទៀត។',
+    error_saving_layout_description: 'មិនអាចរក្សាទុកប្លង់របស់អ្នកទៅកម្មវិធីរុករកនេះបានទេ។ សូមព្យាយាមម្តងទៀត។',
 
 
     // Plant Catalog Page
@@ -498,10 +494,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     no_layout_saved_title: "尚未保存布局",
     no_layout_saved_description: "前往农场布局页面设计您的农场。",
     farm_layout_title: '农场布局设计器',
-    farm_layout_description_firebase: "设计您的农场并将布局保存到云端。您上次保存的布局将自动加载。",
-    farm_layout_description: '通过调整网格并单击单元格来切换植物，规划您的农场布局。',
+    farm_layout_description: "设计您的农场并将布局保存到您的设备。您上次保存的布局将自动加载。",
     layout_controls_title: '布局控件',
-    cloud_save_description: '您的布局已安全地保存在云端。',
+    cloud_save_description: '您的布局保存在此浏览器中。',
     editor_mode_label: '编辑器模式',
     add_mode: '添加',
     remove_mode: '移除',
@@ -529,11 +524,10 @@ export const translations: Record<Locale, Record<string, string>> = {
     layout_loaded_description: '您保存的农场布局已加载。',
     error_loading_layout_title: '加载布局时出错',
     error_loading_layout_description: '无法加载您保存的布局。正在使用默认网格。',
-    error_firebase_connection: "无法连接到数据库。请在 `src/lib/firebase-config.ts` 中检查您的 Firebase 配置。",
     layout_saved_title: '布局已保存',
-    layout_saved_description: '您的农场布局已成功保存。',
+    layout_saved_description: '您的农场布局已保存在此浏览器中。',
     error_saving_layout_title: '保存布局时出错',
-    error_saving_layout_description: '无法保存您的布局。请重试。',
+    error_saving_layout_description: '无法将您的布局保存到此浏览器。请重试。',
     plant_catalog_title: '植物目录',
     plant_catalog_description: '浏览可用植物并将其添加到您的农场。',
     search_placeholder: '搜索植物...',

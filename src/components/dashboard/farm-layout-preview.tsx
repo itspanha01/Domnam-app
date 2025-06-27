@@ -3,42 +3,40 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/context/auth-context";
-import { getFarmLayout } from "@/services/farmLayoutService";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sprout, LayoutGrid, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Plant } from "@/components/farm-layout/farm-grid";
 import { useLanguage } from "@/context/language-context";
-import { useToast } from "@/hooks/use-toast";
 
 export function FarmLayoutPreview() {
   const { user } = useAuth();
   const { t } = useLanguage();
-  const { toast } = useToast();
   const [layout, setLayout] = useState<{ grid: (Plant | null)[][], rows: number, cols: number } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadLayout() {
-      if (!user) return;
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
       setIsLoading(true);
       try {
-        const savedLayout = await getFarmLayout(user.username);
-        setLayout(savedLayout);
+        const key = `domnam-farm-layout-${user.username}`;
+        const savedLayoutRaw = localStorage.getItem(key);
+        if (savedLayoutRaw) {
+          setLayout(JSON.parse(savedLayoutRaw));
+        }
       } catch (error) {
-        console.error("Failed to load farm layout:", error);
-        toast({
-          variant: "destructive",
-          title: t('error_loading_layout_title'),
-          description: t('error_firebase_connection'),
-        });
+        console.error("Failed to load farm layout from local storage:", error);
       } finally {
         setIsLoading(false);
       }
     }
     loadLayout();
-  }, [user, t, toast]);
+  }, [user]);
 
   return (
     <Card>

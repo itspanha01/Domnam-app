@@ -16,7 +16,6 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/context/language-context";
 import { useAuth } from "@/context/auth-context";
-import { saveFarmLayout, getFarmLayout } from "@/services/farmLayoutService";
 import { useToast } from "@/hooks/use-toast";
 
 export interface Plant {
@@ -60,49 +59,57 @@ export function FarmGrid() {
   const [plantType, setPlantType] = useState("Vegetable");
   const [plantColor, setPlantColor] = useState(colorOptions[0]);
 
-  useEffect(() => {
-    handleLoadLayout();
-  }, [user]);
+  const getStorageKey = () => user ? `domnam-farm-layout-${user.username}` : null;
 
-  const handleLoadLayout = async () => {
-    if (!user) return;
-    setIsLoading(true);
+  useEffect(() => {
+    if (!user) {
+      setIsLoading(false);
+      return;
+    }
+    const key = getStorageKey();
+    if (!key) {
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const savedLayout = await getFarmLayout(user.username);
-      if (savedLayout) {
+      const savedLayoutRaw = localStorage.getItem(key);
+      if (savedLayoutRaw) {
+        const savedLayout = JSON.parse(savedLayoutRaw);
         setRows(savedLayout.rows);
         setCols(savedLayout.cols);
         setHistory([savedLayout.grid]);
         setHistoryIndex(0);
-        toast({ title: t('layout_loaded_title'), description: t('layout_loaded_description') });
       }
     } catch (error) {
-      console.error("Failed to load layout:", error);
-      const errorMessage = error instanceof Error && error.message.toLowerCase().includes('offline')
-        ? t('error_firebase_connection')
-        : t('error_loading_layout_description');
-      toast({ variant: "destructive", title: t('error_loading_layout_title'), description: errorMessage });
+      console.error("Failed to load layout from local storage:", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user]);
 
-  const handleSaveLayout = async () => {
+  const handleSaveLayout = () => {
     if (!user) return;
+    const key = getStorageKey();
+    if (!key) return;
+
     setIsSaving(true);
     try {
-      await saveFarmLayout(user.username, grid, rows, cols);
+      const layoutToSave = {
+        grid,
+        rows,
+        cols,
+      };
+      localStorage.setItem(key, JSON.stringify(layoutToSave));
       toast({ title: t('layout_saved_title'), description: t('layout_saved_description') });
     } catch (error) {
-      console.error("Failed to save layout:", error);
-      const errorMessage = error instanceof Error && error.message.toLowerCase().includes('offline')
-        ? t('error_firebase_connection')
-        : t('error_saving_layout_description');
-      toast({ variant: "destructive", title: t('error_saving_layout_title'), description: errorMessage });
+      console.error("Failed to save layout to local storage:", error);
+      toast({ variant: "destructive", title: t('error_saving_layout_title'), description: t('error_saving_layout_description') });
     } finally {
       setIsSaving(false);
     }
   };
+
 
   const updateGrid = (newGrid: (Plant | null)[][]) => {
     const newHistory = history.slice(0, historyIndex + 1);
