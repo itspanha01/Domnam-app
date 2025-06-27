@@ -9,6 +9,41 @@ import { Separator } from '@/components/ui/separator';
 
 const DISCUSSION_STORAGE_KEY = 'domnam-discussion-posts';
 
+const initialPosts: Post[] = [
+  {
+    id: 'demo-post-1',
+    author: {
+      username: 'Admin',
+      profilePicture: '',
+    },
+    title: 'Welcome to the Domnam Community!',
+    content: 'This is the discussion board for all things related to smart farming. Feel free to ask questions, share your tips, or show off your farm layouts!',
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+    replies: [
+      {
+        id: 'demo-reply-1',
+        author: {
+          username: 'FarmManager',
+          profilePicture: '',
+        },
+        content: "Great to be here! I'm excited to learn from everyone.",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
+      },
+    ],
+  },
+  {
+    id: 'demo-post-2',
+    author: {
+      username: 'TomatoKing',
+      profilePicture: '',
+    },
+    title: 'Best way to deal with tomato blight?',
+    content: "I've noticed some of my tomato plants are showing signs of early blight. What are your best organic treatment methods?",
+    timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
+    replies: [],
+  },
+];
+
 export default function DiscussionPage() {
   const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -19,10 +54,12 @@ export default function DiscussionPage() {
       const storedPosts = localStorage.getItem(DISCUSSION_STORAGE_KEY);
       if (storedPosts) {
         setPosts(JSON.parse(storedPosts));
+      } else {
+        setPosts(initialPosts);
       }
     } catch (error) {
       console.error("Failed to parse posts from localStorage", error);
-      setPosts([]);
+      setPosts(initialPosts);
     }
     setIsMounted(true);
   }, []);
